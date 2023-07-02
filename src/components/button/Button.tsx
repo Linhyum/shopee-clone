@@ -1,7 +1,7 @@
 interface Props extends React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> {
    children: string
    isLoading?: boolean
-   className: string
+   className?: string
 }
 export default function Button({ children, isLoading, className, ...rest }: Props) {
    return (

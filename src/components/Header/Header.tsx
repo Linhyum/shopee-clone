@@ -24,7 +24,7 @@ export default function Header() {
             backgroundImage: 'linear-gradient(-180deg,#f53d2d,#f63)'
          }}
       >
-         <div className='container py-3 md:text-base'>
+         <div className='container pb-5 pt-3 md:text-base'>
             <div className='flex items-center justify-end gap-x-6 text-white'>
                <Popover
                   renderPopover={
