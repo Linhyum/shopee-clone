@@ -1,29 +1,66 @@
 import { Link } from 'react-router-dom'
 import Button from 'src/components/button/Button'
-import { useEffect } from 'react'
+import { useContext, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { toast } from 'react-toastify'
 import Input from 'src/components/Input/Input'
 import { FormDataLogin, loginSchema } from 'src/utils/rules'
+import { useMutation } from '@tanstack/react-query'
+import { login } from 'src/apis/auth.api'
+import { isAxiosUnprocessableEntity } from 'src/utils/utils'
+import { ErrorResponse } from 'src/types/utils.type'
+import { AppContext } from 'src/contexts/app.context'
+import { path } from 'src/constants/path'
 
 export default function Login() {
+   const { setIsAuthenticated, setProfile } = useContext(AppContext)
    const {
       handleSubmit,
       register,
-      formState: { isSubmitting, errors }
+      setError,
+      formState: { errors }
    } = useForm<FormDataLogin>({
       mode: 'onSubmit',
       resolver: yupResolver(loginSchema)
    })
 
+   const loginMutation = useMutation({
+      mutationFn: (body: FormDataLogin) => login(body)
+   })
    const onSubmit = handleSubmit((data) => {
-      try {
-         console.log(data)
-         toast.success('Đăng nhập thành công')
-      } catch (error) {
-         toast.error('Email hoặc mật khẩu không đúng')
-      }
+      //data này là từ cái form nhập vào(email, password)
+      loginMutation.mutate(data, {
+         //đây là cái data chứa thông tin người dùng trả về khi đăng ký thành công
+         onSuccess: (data) => {
+            setIsAuthenticated(true)
+            setProfile(data.data.data.user)
+            toast.success('Đăng nhập thành công')
+         },
+         onError: (error) => {
+            //nếu có lỗi trả về từ axios thì sẽ lấy ra message lỗi từ axios gắn vào setError của react-hook-form để hiển thị ra ngoài input
+            if (isAxiosUnprocessableEntity<ErrorResponse<FormDataLogin>>(error)) {
+               //lấy ra cái lỗi
+               const formError = error.response?.data.data
+               if (formError) {
+                  Object.keys(formError).forEach((key) => {
+                     if (formError[key as keyof FormDataLogin]) {
+                        setError(key as keyof FormDataLogin, {
+                           message: formError[key as keyof FormDataLogin],
+                           type: 'Server'
+                        })
+                     }
+                  })
+               }
+               // if (formError?.email) {
+               //    setError('email', { message: formError.email, type: 'Server' })
+               // }
+               // if (formError?.password) {
+               //    setError('password', { message: formError.password, type: 'Server' })
+               // }
+            }
+         }
+      })
    })
 
    useEffect(() => {
@@ -54,13 +91,18 @@ export default function Login() {
                      register={register}
                      errorMessage={errors.password?.message}
                   />
-                  <Button type='submit' isLoading={isSubmitting} disabled={isSubmitting}>
+                  <Button
+                     type='submit'
+                     isLoading={loginMutation.isLoading}
+                     disabled={loginMutation.isLoading}
+                     className='w-full rounded-md bg-primary py-3 text-base text-white disabled:opacity-50'
+                  >
                      ĐĂNG NHẬP
                   </Button>
                </div>
                <p className='mt-7 text-center text-base text-secondary'>
                   Bạn chưa có tài khoản?{' '}
-                  <Link className='text-primary' to={'/register'}>
+                  <Link className='text-primary' to={path.register}>
                      Đăng ký
                   </Link>
                </p>

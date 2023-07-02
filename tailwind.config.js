@@ -20,7 +20,7 @@ export default {
       plugin(function ({ addComponents }) {
          addComponents({
             '.container': {
-               maxWidth: '1224px',
+               maxWidth: '1248px',
                width: '100%',
                marginLeft: 'auto',
                marginRight: 'auto',
