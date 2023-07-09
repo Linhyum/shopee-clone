@@ -7,7 +7,7 @@ import { toast } from 'react-toastify'
 import Input from 'src/components/Input/Input'
 import { FormDataLogin, loginSchema } from 'src/utils/rules'
 import { useMutation } from '@tanstack/react-query'
-import { login } from 'src/apis/auth.api'
+import { authApi } from 'src/apis/auth.api'
 import { isAxiosUnprocessableEntity } from 'src/utils/utils'
 import { ErrorResponse } from 'src/types/utils.type'
 import { AppContext } from 'src/contexts/app.context'
@@ -26,7 +26,7 @@ export default function Login() {
    })
 
    const loginMutation = useMutation({
-      mutationFn: (body: FormDataLogin) => login(body)
+      mutationFn: (body: FormDataLogin) => authApi.login(body)
    })
    const onSubmit = handleSubmit((data) => {
       //data này là từ cái form nhập vào(email, password)

@@ -10,3 +10,26 @@ export const registerSchema = Yup.object().shape({
 export const loginSchema = registerSchema.omit(['confirm_password'])
 export type FormDataRegister = Yup.InferType<typeof registerSchema>
 export type FormDataLogin = Yup.InferType<typeof loginSchema>
+
+function testPriceMinMax(this: Yup.TestContext<Yup.AnyObject>) {
+   const { price_max, price_min } = this.parent
+   if (price_min !== '' && price_max !== '') {
+      return Number(price_max) >= Number(price_min)
+   }
+   return price_min !== '' || price_max !== ''
+}
+
+export const priceSchema = Yup.object().shape({
+   price_min: Yup.string().test({
+      name: 'price-not-allowed',
+      message: 'Giá không phù hợp',
+      test: testPriceMinMax
+   }),
+   price_max: Yup.string().test({
+      name: 'price-not-allowed',
+      message: 'Giá không phù hợp',
+      test: testPriceMinMax
+   })
+})
+
+export type FormDataPrice = Yup.InferType<typeof priceSchema>

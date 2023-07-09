@@ -1,9 +1,63 @@
+import { Link, createSearchParams, useNavigate } from 'react-router-dom'
+import Seperate from 'src/components/Seperate/Seperate'
 import Button from 'src/components/button/Button'
+import { path } from 'src/constants/path'
+import { CategoryType } from 'src/types/category.type'
+import { QueryConfig } from '../ProductList'
+import { useForm, Controller } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { FormDataPrice, priceSchema } from 'src/utils/rules'
+import { InputNumber } from 'src/components/InputNumber/InputNumber'
+import { NoUndefinedField } from 'src/types/utils.type'
+import RatingStars from './RatingStars/RatingStars'
+import { omit } from 'lodash'
+interface Props {
+   queryConfig: QueryConfig
+   categoriesData: CategoryType[]
+}
+type FormData = NoUndefinedField<FormDataPrice>
+export default function AsideFilter({ queryConfig, categoriesData }: Props) {
+   const { category } = queryConfig
+   const navigate = useNavigate()
+   const {
+      control,
+      handleSubmit,
+      trigger,
+      reset,
+      formState: { errors }
+   } = useForm<FormData>({
+      defaultValues: {
+         price_max: '',
+         price_min: ''
+      },
+      mode: 'onSubmit',
+      resolver: yupResolver(priceSchema)
+   })
+   const onSubmit = handleSubmit((data) => {
+      navigate({
+         pathname: path.home,
+         search: createSearchParams({
+            ...queryConfig,
+            page: '1',
+            price_max: data.price_max,
+            price_min: data.price_min
+         }).toString()
+      })
+   })
 
-export default function AsideFilter() {
+   const handleDeleteAll = () => {
+      reset()
+      navigate({
+         pathname: path.home,
+         search: createSearchParams(
+            omit({ ...queryConfig, page: '1' }, ['price_max', 'category', 'rating_filter', 'price_min'])
+         ).toString()
+      })
+   }
+
    return (
       <>
-         <div className='mt-4 flex items-center gap-x-2 font-semibold text-primary'>
+         <Link to={path.home} className={`mt-4 flex items-center gap-x-2 font-semibold ${!category && 'text-primary'}`}>
             <svg
                xmlns='http://www.w3.org/2000/svg'
                fill='none'
@@ -19,13 +73,32 @@ export default function AsideFilter() {
                />
             </svg>
             Tất cả danh mục
-         </div>
-         <div className='my-3 border-t border-t-gray-300'></div>
-         <div className='ml-4 flex flex-col gap-y-3'>
-            <span>Đồng hồ</span>
-            <span>Áo thun</span>
-            <span>Điện thoại</span>
-         </div>
+         </Link>
+         <Seperate />
+         <ul className='ml-4 flex flex-col gap-y-3'>
+            {categoriesData.map((categoryItem) => (
+               <li key={categoryItem._id}>
+                  <Link
+                     className={`${category === categoryItem._id && `relative font-semibold text-primary`}`}
+                     to={{
+                        pathname: path.home,
+                        search: createSearchParams({
+                           ...queryConfig,
+                           category: categoryItem._id,
+                           page: '1'
+                        }).toString()
+                     }}
+                  >
+                     {category === categoryItem._id && (
+                        <svg viewBox='0 0 4 7' className='absolute -left-4 top-1 h-2 w-2 fill-primary'>
+                           <polygon points='4 3.5 0 0 0 7' />
+                        </svg>
+                     )}
+                     {categoryItem.name}
+                  </Link>
+               </li>
+            ))}
+         </ul>
          <div className='mt-4 flex items-center gap-x-2 font-semibold'>
             <svg
                enableBackground='new 0 0 15 15'
@@ -46,76 +119,56 @@ export default function AsideFilter() {
             </svg>
             BỘ LỌC TÌM KIẾM
          </div>
-         <div className='my-3 border-t border-t-gray-300'></div>
+         <Seperate />
          <span>Khoảng giá</span>
-
-         <form className='py-2'>
-            {/* CHƯA HIỂU PHẦN NÀY */}
-            <div className='mb-5 flex items-center gap-x-2'>
-               <div className='h-[30px] grow'>
-                  <input
-                     className='h-full w-full rounded-sm border border-gray-300 p-1 outline-none focus:border-gray-500 focus:shadow-sm'
-                     type='text'
-                     placeholder='₫ TỪ'
-                     name='price_min'
-                  />
-               </div>
+         <form onSubmit={onSubmit} className='py-2'>
+            <div className='flex items-center gap-x-2'>
+               <Controller
+                  control={control}
+                  name='price_min'
+                  render={({ field }) => (
+                     <InputNumber
+                        className=''
+                        placeholder='₫ TỪ'
+                        classNameInput='h-[30px] w-full rounded-sm border border-gray-300 p-1 outline-none focus:border-gray-500 focus:shadow-sm'
+                        {...field}
+                        onChange={(e) => {
+                           field.onChange(e)
+                           trigger('price_max') //khi onchange price_min thì sẽ validate price_max
+                        }}
+                        classNameError='hidden'
+                     />
+                  )}
+               />
                <div>-</div>
-               <div className='h-[30px] grow'>
-                  <input
-                     className='h-full w-full rounded-sm border border-gray-300 p-1 outline-none focus:border-gray-500 focus:shadow-sm'
-                     type='text'
-                     placeholder='₫ ĐẾN'
-                     name='price_max'
-                  />
-               </div>
+               <Controller
+                  control={control}
+                  name='price_max'
+                  render={({ field }) => (
+                     <InputNumber
+                        className=''
+                        placeholder='₫ ĐẾN'
+                        classNameInput='h-[30px] w-full rounded-sm border border-gray-300 p-1 outline-none focus:border-gray-500 focus:shadow-sm'
+                        {...field}
+                        onChange={(e) => {
+                           field.onChange(e)
+                           trigger('price_min')
+                        }}
+                        classNameError='hidden'
+                     />
+                  )}
+               />
             </div>
-            <Button type='submit' className='w-full bg-primary py-2 text-sm text-white'>
+            <div className='min-h-[20px] text-center text-sm text-red-500'>{errors.price_min?.message}</div>
+            <Button type='submit' className='w-full bg-primary py-2 text-sm text-white hover:opacity-90'>
                ÁP DỤNG
             </Button>
          </form>
-         <div className='my-3 border-t border-t-gray-300'></div>
+         <Seperate />
          <span>Đánh giá</span>
-         <div className='ml-2 flex flex-col gap-y-2 py-1 pt-2'>
-            {Array(5)
-               .fill(0)
-               .map((_, index) => (
-                  <div key={index} className='flex cursor-pointer items-center'>
-                     {Array(5)
-                        .fill(0)
-                        .map((_, index) => (
-                           <svg key={index} viewBox='0 0 9.5 8' className='mr-1 h-4 w-4'>
-                              <defs>
-                                 <linearGradient id='ratingStarGradient' x1='50%' x2='50%' y1='0%' y2='100%'>
-                                    <stop offset={0} stopColor='#ffca11' />
-                                    <stop offset={1} stopColor='#ffad27' />
-                                 </linearGradient>
-                                 <polygon
-                                    id='ratingStar'
-                                    points='14.910357 6.35294118 12.4209136 7.66171903 12.896355 4.88968305 10.8823529 2.92651626 13.6656353 2.52208166 14.910357 0 16.1550787 2.52208166 18.9383611 2.92651626 16.924359 4.88968305 17.3998004 7.66171903'
-                                 />
-                              </defs>
-                              <g fill='url(#ratingStarGradient)' fillRule='evenodd' stroke='none' strokeWidth={1}>
-                                 <g transform='translate(-876 -1270)'>
-                                    <g transform='translate(155 992)'>
-                                       <g transform='translate(600 29)'>
-                                          <g transform='translate(10 239)'>
-                                             <g transform='translate(101 10)'>
-                                                <use stroke='#ffa727' strokeWidth='.5' xlinkHref='#ratingStar' />
-                                             </g>
-                                          </g>
-                                       </g>
-                                    </g>
-                                 </g>
-                              </g>
-                           </svg>
-                        ))}
-                     <span className='translate-y-[1px] text-sm'>Trở lên</span>
-                  </div>
-               ))}
-         </div>
-         <div className='my-3 border-t border-t-gray-300'></div>
-         <Button type='submit' className='mt-1 w-full bg-primary py-2 text-sm text-white'>
+         <RatingStars queryConfig={queryConfig} />
+         <Seperate />
+         <Button onClick={handleDeleteAll} className='mt-1 w-full bg-primary py-2 text-sm text-white hover:opacity-90'>
             XOÁ TẤT CẢ
          </Button>
       </>

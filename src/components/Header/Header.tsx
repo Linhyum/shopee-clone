@@ -3,13 +3,13 @@ import Popover from '../Popover/Popover'
 import { useContext } from 'react'
 import { AppContext } from 'src/contexts/app.context'
 import { useMutation } from '@tanstack/react-query'
-import { logout } from 'src/apis/auth.api'
+import { authApi } from 'src/apis/auth.api'
 import Button from '../button/Button'
 import { path } from 'src/constants/path'
 export default function Header() {
    const { isAuthenticated, setIsAuthenticated, profile, setProfile } = useContext(AppContext)
    const logoutMutation = useMutation({
-      mutationFn: () => logout(),
+      mutationFn: () => authApi.logout(),
       onSuccess: () => {
          setIsAuthenticated(false)
          setProfile(null)
@@ -101,7 +101,7 @@ export default function Header() {
                )}
             </div>
             <div className='mt-5 flex items-center '>
-               <Link className='mr-4' to={path.home}>
+               <Link to={path.home}>
                   <svg
                      className='hidden h-11 fill-white md:inline-block'
                      viewBox='0 0 296 84'
@@ -136,21 +136,21 @@ export default function Header() {
                      <path d='M4.462 19.462c.42-.419.753-.89 1-1.394.453.213.902.434 1.347.661a6.743 6.743 0 01-1.286 1.794.75.75 0 11-1.06-1.06z' />
                   </svg>
                </Link>
-               <form className='mr-4 flex h-[40px] flex-1 items-center rounded-sm bg-white p-1 md:mr-12 md:h-[48px]'>
+               <form className='ml-2 mr-2 flex flex-1 rounded-sm bg-white p-1 md:ml-5 md:mr-10'>
                   <input
                      type='text'
-                     name='search'
+                     className='w-full border-none bg-transparent p-1 outline-none md:px-3 md:py-2 md:text-base'
                      placeholder='Free Ship Đơn Từ 0Đ'
-                     className='h-full flex-1 rounded-sm bg-transparent px-3 outline-none'
+                     name='search'
                   />
-                  <button className='block h-full rounded-sm bg-primary px-4 md:px-6'>
+                  <button className='rounded-sm bg-primary px-3 py-1 text-white hover:opacity-90 md:px-6 md:py-2'>
                      <svg
                         xmlns='http://www.w3.org/2000/svg'
                         fill='none'
                         viewBox='0 0 24 24'
-                        strokeWidth={1.5}
+                        strokeWidth='1.5'
                         stroke='currentColor'
-                        className='h-5 w-5 text-white md:h-6 md:w-6'
+                        className='h-4 w-4 md:h-6 md:w-6'
                      >
                         <path
                            strokeLinecap='round'
@@ -160,6 +160,32 @@ export default function Header() {
                      </svg>
                   </button>
                </form>
+               {/* <form className='ml-2 mr-2 flex-grow md:ml-5 md:mr-10'>
+                  <div className='flex rounded-sm bg-white p-1'>
+                     <input
+                        type='text'
+                        className='w-full flex-grow border-none bg-transparent p-1 outline-none md:px-3 md:py-2 md:text-base'
+                        placeholder='Free Ship Đơn Từ 0Đ'
+                        name='search'
+                     />
+                     <button className='flex-shrink-0 rounded-sm bg-primary px-3 py-1 text-white hover:opacity-90 md:px-6 md:py-2'>
+                        <svg
+                           xmlns='http://www.w3.org/2000/svg'
+                           fill='none'
+                           viewBox='0 0 24 24'
+                           strokeWidth='1.5'
+                           stroke='currentColor'
+                           className='h-4 w-4 md:h-6 md:w-6'
+                        >
+                           <path
+                              strokeLinecap='round'
+                              strokeLinejoin='round'
+                              d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z'
+                           />
+                        </svg>
+                     </button>
+                  </div>
+               </form> */}
                <Popover
                   renderPopover={
                      <div className='w-full max-w-[400px] rounded-sm bg-white py-2 shadow-md'>
