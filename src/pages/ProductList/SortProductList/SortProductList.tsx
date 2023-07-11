@@ -19,14 +19,14 @@ export default function SortProductList({ queryConfig, pageSize }: Props) {
 
    const handleSort = (sortByValue: Exclude<ProductListParams['sort_by'], undefined>) => {
       navigate({
-         pathname: '/',
+         pathname: path.home,
          search: createSearchParams(omit({ ...queryConfig, sort_by: sortByValue }, ['order'])).toString() //order chỉ dùng cho filter theo price
       })
    }
 
    const handlePriceOrder = (orderValue: Exclude<ProductListParams['order'], undefined>) => {
       navigate({
-         pathname: '/',
+         pathname: path.home,
          search: createSearchParams({ ...queryConfig, sort_by: sortBy.price, order: orderValue }).toString()
       })
    }

@@ -2,12 +2,12 @@ import { Link } from 'react-router-dom'
 import ProductRating from 'src/components/ProductRating/ProductRating'
 import { path } from 'src/constants/path'
 import { ProductType } from 'src/types/product.type'
-import { formatNumber, formatNumberWithK } from 'src/utils/utils'
+import { formatNumber, formatNumberWithK, generateNameId } from 'src/utils/utils'
 
 export default function Product({ product }: { product: ProductType }) {
    return (
       <Link
-         to={path.home}
+         to={`${path.home}${generateNameId({ name: product.name, id: product._id })}`}
          className='overflow-hidden rounded-sm bg-white shadow transition-transform duration-100 hover:translate-y-[-0.04rem] hover:shadow-md'
       >
          <div className='relative pt-[100%]'>

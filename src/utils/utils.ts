@@ -16,3 +16,18 @@ export function formatNumberWithK(number: number) {
       .replace('.', ',')
       .toLowerCase()
 }
+
+//xoá các kí tự đặc biệt
+const removeSpecialCharacter = (str: string) =>
+   // eslint-disable-next-line no-useless-escape
+   str.replace(/!|@|%|\^|\*|\(|\)|\+|\=|\<|\>|\?|\/|,|\.|\:|\;|\'|\"|\&|\#|\[|\]|~|\$|_|`|-|{|}|\||\\/g, '')
+
+export const generateNameId = ({ name, id }: { name: string; id: string }) => {
+   return `${removeSpecialCharacter(name).replace(/\s/g, '-')}-i-${id}` // /\s/g là dấu cách
+}
+
+//lấy ra id từ url trên(generateNameId)
+export const getIdFromNameId = (nameId: string) => {
+   const arr = nameId.split('-i-')
+   return arr[1]
+}

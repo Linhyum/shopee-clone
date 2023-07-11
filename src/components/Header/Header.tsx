@@ -1,12 +1,25 @@
-import { Link } from 'react-router-dom'
+import { Link, createSearchParams, useNavigate } from 'react-router-dom'
 import Popover from '../Popover/Popover'
 import { useContext } from 'react'
 import { AppContext } from 'src/contexts/app.context'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { authApi } from 'src/apis/auth.api'
 import Button from '../button/Button'
 import { path } from 'src/constants/path'
+import { useForm } from 'react-hook-form'
+import useQueryConfig from 'src/hooks/useQueryConfig'
+import { getPurchases } from 'src/apis/purchase.api'
+import { purchasesStatus } from 'src/constants/purchase'
+import { formatNumber, generateNameId } from 'src/utils/utils'
 export default function Header() {
+   const navigate = useNavigate()
+   const { handleSubmit, register } = useForm<{ search: string }>({
+      defaultValues: {
+         search: ''
+      }
+   })
+   const queryConfig = useQueryConfig()
+
    const { isAuthenticated, setIsAuthenticated, profile, setProfile } = useContext(AppContext)
    const logoutMutation = useMutation({
       mutationFn: () => authApi.logout(),
@@ -18,6 +31,24 @@ export default function Header() {
    const handleLogout = () => {
       logoutMutation.mutate()
    }
+
+   const handleSearch = handleSubmit((data) => {
+      if (data.search.trim() !== '') {
+         navigate({
+            pathname: path.home,
+            search: createSearchParams({ ...queryConfig, name: data.search.trim() }).toString()
+         })
+      }
+   })
+
+   //hiển thị sản phẩm đã addToCart trong giỏ hàng
+   const { data } = useQuery({
+      queryKey: ['purchase', { status: purchasesStatus.inCart }],
+      queryFn: () => getPurchases({ status: purchasesStatus.inCart }),
+      keepPreviousData: true // giữ lại data trước để mỗi lần fetch lại không bị giật trang web
+   })
+   const purchaseInCartData = data?.data.data
+
    return (
       <header
          style={{
@@ -136,12 +167,12 @@ export default function Header() {
                      <path d='M4.462 19.462c.42-.419.753-.89 1-1.394.453.213.902.434 1.347.661a6.743 6.743 0 01-1.286 1.794.75.75 0 11-1.06-1.06z' />
                   </svg>
                </Link>
-               <form className='ml-2 mr-2 flex flex-1 rounded-sm bg-white p-1 md:ml-5 md:mr-10'>
+               <form onSubmit={handleSearch} className='ml-2 mr-2 flex flex-1 rounded-sm bg-white p-1 md:ml-5 md:mr-10'>
                   <input
                      type='text'
                      className='w-full border-none bg-transparent p-1 outline-none md:px-3 md:py-2 md:text-base'
                      placeholder='Free Ship Đơn Từ 0Đ'
-                     name='search'
+                     {...register('search')}
                   />
                   <button className='rounded-sm bg-primary px-3 py-1 text-white hover:opacity-90 md:px-6 md:py-2'>
                      <svg
@@ -160,106 +191,82 @@ export default function Header() {
                      </svg>
                   </button>
                </form>
-               {/* <form className='ml-2 mr-2 flex-grow md:ml-5 md:mr-10'>
-                  <div className='flex rounded-sm bg-white p-1'>
-                     <input
-                        type='text'
-                        className='w-full flex-grow border-none bg-transparent p-1 outline-none md:px-3 md:py-2 md:text-base'
-                        placeholder='Free Ship Đơn Từ 0Đ'
-                        name='search'
-                     />
-                     <button className='flex-shrink-0 rounded-sm bg-primary px-3 py-1 text-white hover:opacity-90 md:px-6 md:py-2'>
-                        <svg
-                           xmlns='http://www.w3.org/2000/svg'
-                           fill='none'
-                           viewBox='0 0 24 24'
-                           strokeWidth='1.5'
-                           stroke='currentColor'
-                           className='h-4 w-4 md:h-6 md:w-6'
-                        >
-                           <path
-                              strokeLinecap='round'
-                              strokeLinejoin='round'
-                              d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z'
-                           />
-                        </svg>
-                     </button>
-                  </div>
-               </form> */}
+
                <Popover
                   renderPopover={
                      <div className='w-full max-w-[400px] rounded-sm bg-white py-2 shadow-md'>
-                        <div className='mb-3 px-2 font-medium capitalize text-secondary'>sản phẩm mới thêm</div>
-                        <ul>
-                           <li className='flex items-center gap-x-2 p-2 hover:bg-gray-100'>
+                        {purchaseInCartData && purchaseInCartData.length > 0 ? (
+                           <>
+                              <div className='mb-3 px-2 font-medium capitalize text-secondary'>sản phẩm mới thêm</div>
+                              <ul>
+                                 {purchaseInCartData.slice(0, 5).map((purchase) => (
+                                    <li key={purchase._id}>
+                                       <Link
+                                          to={`${path.home}${generateNameId({
+                                             name: purchase.product.name,
+                                             id: purchase.product._id
+                                          })}`}
+                                          className='flex items-center gap-x-2 p-2 hover:bg-gray-100'
+                                       >
+                                          <img
+                                             src={purchase.product.image}
+                                             alt={purchase.product.name}
+                                             className='h-11 w-11 object-cover'
+                                          />
+                                          <p title={purchase.product.name} className='truncate'>
+                                             {purchase.product.name}
+                                          </p>
+                                          <span className='text-primary'>₫{formatNumber(purchase.price)}</span>
+                                       </Link>
+                                    </li>
+                                 ))}
+                              </ul>
+                              <div className='mt-4 flex items-center justify-between px-2'>
+                                 <p className='capitalize text-secondary'>
+                                    {purchaseInCartData.slice(5).length || ''} thêm hàng vào giỏ
+                                 </p>
+                                 <Link
+                                    to={path.home}
+                                    className='rounded-sm bg-primary px-4 py-2 capitalize text-white hover:opacity-90'
+                                 >
+                                    xem giỏ hàng
+                                 </Link>
+                              </div>
+                           </>
+                        ) : (
+                           <div className='flex h-[300px] w-[300px] flex-col items-center justify-center gap-y-3'>
                               <img
-                                 src='https://cdn.tgdd.vn/Products/Images/42/247508/iphone-14-pro-vang-thumb-600x600.jpg'
-                                 alt='Điện thoại Apple Iphone 12 64GB - Hàng chính hãng VNA'
-                                 className='h-11 w-11 object-cover'
+                                 className='h-24 w-24 object-cover'
+                                 src='https://shopee-clone-ts.vercel.app/assets/no-product.b0846037.png'
+                                 alt='no-product'
                               />
-                              <p title='Điện thoại Apple Iphone 12 64GB - Hàng chính hãng VNA' className='truncate'>
-                                 Điện thoại Apple Iphone 12 64GB - Hàng chính hãng VNA
-                              </p>
-                              <span className='text-primary'>₫20.990.000</span>
-                           </li>
-                           <li className='flex items-center gap-x-2 p-2 hover:bg-gray-100'>
-                              <img
-                                 src='https://cdn.tgdd.vn/Products/Images/42/247508/iphone-14-pro-vang-thumb-600x600.jpg'
-                                 alt='Điện thoại Apple Iphone 12 64GB - Hàng chính hãng VNA'
-                                 className='h-11 w-11 object-cover'
-                              />
-                              <p title='Điện thoại Apple Iphone 12 64GB - Hàng chính hãng VNA' className='truncate'>
-                                 Điện thoại Apple Iphone 12 64GB - Hàng chính hãng VNA
-                              </p>
-                              <span className='text-primary'>₫20.990.000</span>
-                           </li>
-                           <li className='flex items-center gap-x-2 p-2 hover:bg-gray-100'>
-                              <img
-                                 src='https://cdn.tgdd.vn/Products/Images/42/247508/iphone-14-pro-vang-thumb-600x600.jpg'
-                                 alt='Điện thoại Apple Iphone 12 64GB - Hàng chính hãng VNA'
-                                 className='h-11 w-11 object-cover'
-                              />
-                              <p title='Điện thoại Apple Iphone 12 64GB - Hàng chính hãng VNA' className='truncate'>
-                                 Điện thoại Apple Iphone 12 64GB - Hàng chính hãng VNA
-                              </p>
-                              <span className='text-primary'>₫20.990.000</span>
-                           </li>
-                        </ul>
-                        <div className='mt-4 flex items-center justify-between px-2'>
-                           <p className='capitalize text-secondary'>thêm hàng vào giỏ</p>
-                           <Link
-                              to={path.home}
-                              className='rounded-sm bg-primary px-4 py-2 capitalize text-white hover:opacity-90'
-                           >
-                              xem giỏ hàng
-                           </Link>
-                        </div>
-
-                        {/* <div className='flex h-[300px] w-[300px] flex-col items-center justify-center gap-y-3'>
-                           <img
-                              className='h-24 w-24 object-cover'
-                              src='https://shopee-clone-ts.vercel.app/assets/no-product.b0846037.png'
-                              alt='no-product'
-                           />
-                           <span className='capitalize'>Chưa có sản phẩm</span>
-                        </div> */}
+                              <span className='capitalize'>Chưa có sản phẩm</span>
+                           </div>
+                        )}
                      </div>
                   }
                >
-                  <svg
-                     xmlns='http://www.w3.org/2000/svg'
-                     fill='none'
-                     viewBox='0 0 24 24'
-                     strokeWidth={1.5}
-                     stroke='currentColor'
-                     className=' h-8 w-8 cursor-pointer text-white'
-                  >
-                     <path
-                        strokeLinecap='round'
-                        strokeLinejoin='round'
-                        d='M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z'
-                     />
-                  </svg>
+                  <div className='relative'>
+                     <svg
+                        xmlns='http://www.w3.org/2000/svg'
+                        fill='none'
+                        viewBox='0 0 24 24'
+                        strokeWidth={1.5}
+                        stroke='currentColor'
+                        className='h-8 w-8 cursor-pointer text-white'
+                     >
+                        <path
+                           strokeLinecap='round'
+                           strokeLinejoin='round'
+                           d='M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z'
+                        />
+                     </svg>
+                     {purchaseInCartData && purchaseInCartData.length > 0 && (
+                        <div className='absolute top-[-4px] right-[-8px] bg-white px-2 text-xs text-primary rounded-lg'>
+                           {purchaseInCartData.length}
+                        </div>
+                     )}
+                  </div>
                </Popover>
             </div>
          </div>
