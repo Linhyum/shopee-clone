@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { useContext, useEffect } from 'react'
+import { useContext } from 'react'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
@@ -66,9 +66,7 @@ export default function Register() {
       })
    })
 
-   useEffect(() => {
-      document.title = 'Đăng ký | Shopee Clone'
-   }, [])
+   document.title = 'Đăng ký | Shopee Clone'
    return (
       <div
          style={{

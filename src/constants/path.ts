@@ -7,5 +7,6 @@ export const path = {
    products: '/products',
    categories: '/categories',
    productDetails: '/:id',
-   purchases: '/purchases'
+   purchases: '/purchases',
+   cart: '/cart'
 } as const

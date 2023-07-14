@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import AsideFilter from './AsideFilter/AsideFilter'
 import SortProductList from './SortProductList/SortProductList'
 import Product from './Product/Product'
@@ -28,10 +27,7 @@ export default function ProductList() {
       queryFn: () => getCategories()
    })
 
-   useEffect(() => {
-      document.title = 'Trang chủ | Shopee Clone'
-   }, [])
-
+   document.title = 'Trang chủ | Shopee Clone'
    return (
       <div className='bg-gray-200 py-5'>
          <div className='container grid grid-cols-12 gap-y-10 md:gap-5'>

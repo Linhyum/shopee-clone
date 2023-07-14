@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import Button from 'src/components/button/Button'
-import { useContext, useEffect } from 'react'
+import { useContext } from 'react'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { toast } from 'react-toastify'
@@ -63,9 +63,7 @@ export default function Login() {
       })
    })
 
-   useEffect(() => {
-      document.title = 'Đăng nhập | Shopee Clone'
-   }, [])
+   document.title = 'Đăng nhập | Shopee Clone'
    return (
       <div
          style={{

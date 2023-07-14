@@ -1,6 +1,5 @@
 import { Navigate, Outlet, Route, Routes } from 'react-router-dom'
 import ProductList from './pages/ProductList/ProductList'
-import RegisterLayout from './layouts/RegisterLayout/RegisterLayout'
 import Login from './pages/Login/Login'
 import Register from './pages/Register/Register'
 import MainLayout from './layouts/MainLayout/MainLayout'
@@ -9,6 +8,7 @@ import { useContext } from 'react'
 import { AppContext } from './contexts/app.context'
 import { path } from './constants/path'
 import ProductDetails from './pages/ProductDetails/ProductDetails'
+import Cart from './pages/Cart/Cart'
 
 function ProtectedRoute() {
    const { isAuthenticated } = useContext(AppContext)
@@ -41,6 +41,7 @@ export default function App() {
                </MainLayout>
             }
          />
+
          <Route element={<ProtectedRoute />}>
             <Route
                path={path.profile}
@@ -50,22 +51,30 @@ export default function App() {
                   </MainLayout>
                }
             />
+            <Route
+               path={path.cart}
+               element={
+                  <MainLayout isCart>
+                     <Cart />
+                  </MainLayout>
+               }
+            />
          </Route>
          <Route element={<RejectedRoute />}>
             <Route
                path={path.login}
                element={
-                  <RegisterLayout>
+                  <MainLayout isRegister>
                      <Login />
-                  </RegisterLayout>
+                  </MainLayout>
                }
             />
             <Route
                path={path.register}
                element={
-                  <RegisterLayout>
+                  <MainLayout isRegister>
                      <Register />
-                  </RegisterLayout>
+                  </MainLayout>
                }
             />
          </Route>

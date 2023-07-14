@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import DOMPurify from 'dompurify'
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { productApi } from 'src/apis/product.api'
 import ProductRating from 'src/components/ProductRating/ProductRating'
 import { ProductListParams, ProductType } from 'src/types/product.type'
@@ -11,7 +11,9 @@ import QuantityController from 'src/components/QuantityController/QuantityContro
 import { addToCart } from 'src/apis/purchase.api'
 import { toast } from 'react-toastify'
 import { purchasesStatus } from 'src/constants/purchase'
+import { path } from 'src/constants/path'
 export default function ProductDetails() {
+   const navigate = useNavigate()
    const queryClient = useQueryClient()
    const [buyCount, setBuyCount] = useState<number>(1)
    const { id } = useParams()
@@ -84,16 +86,30 @@ export default function ProductDetails() {
    }
 
    //add to cart
-   const { mutate } = useMutation({
-      mutationFn: (body: { product_id: string; buy_count: number }) => addToCart(body),
-      onSuccess: (data) => {
-         toast.success(data.data.message)
-         queryClient.invalidateQueries({ queryKey: ['purchase', { status: purchasesStatus.inCart }] }) // khi gọi mutate của tk này thì tk có querykey là purchase sẽ cập nhật lại(khi thêm giỏ hàng thì tk giỏ hàng của header sẽ update lại)
-      }
+   const addToCartMutation = useMutation({
+      mutationFn: addToCart
    })
 
-   const handleAddToCart = (body: { product_id: string; buy_count: number }) => {
-      mutate(body)
+   const handleAddToCart = () => {
+      addToCartMutation.mutate(
+         { product_id: product?._id as string, buy_count: buyCount },
+         {
+            onSuccess: (data) => {
+               toast.success(data.data.message)
+               queryClient.invalidateQueries({ queryKey: ['purchase', { status: purchasesStatus.inCart }] }) // khi gọi mutate của tk này thì tk có querykey là purchase sẽ cập nhật lại(khi thêm giỏ hàng thì tk giỏ hàng của header sẽ update lại)
+            }
+         }
+      )
+   }
+
+   const buyNow = async () => {
+      const res = await addToCartMutation.mutateAsync({ product_id: product?._id as string, buy_count: buyCount })
+      const purchase = res.data.data
+      navigate(path.cart, {
+         state: {
+            purchaseId: purchase._id
+         }
+      })
    }
 
    useEffect(() => {
@@ -213,7 +229,7 @@ export default function ProductDetails() {
                         </div>
                         <div className='flex flex-wrap gap-4 text-base'>
                            <button
-                              onClick={() => handleAddToCart({ product_id: product._id, buy_count: buyCount })}
+                              onClick={handleAddToCart}
                               className='flex items-center rounded-sm border border-primary bg-primary/10 px-5 py-3 text-primary hover:bg-primary/5'
                            >
                               <svg
@@ -257,7 +273,10 @@ export default function ProductDetails() {
                               </svg>
                               Thêm Vào Giỏ Hàng
                            </button>
-                           <button className='rounded-sm bg-primary px-5 py-3 text-white hover:bg-primary/90'>
+                           <button
+                              onClick={buyNow}
+                              className='rounded-sm bg-primary px-5 py-3 text-white hover:bg-primary/90'
+                           >
                               Mua Ngay
                            </button>
                         </div>
