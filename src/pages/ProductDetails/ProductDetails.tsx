@@ -110,6 +110,19 @@ export default function ProductDetails() {
             purchaseId: purchase._id
          }
       })
+      // addToCartMutation.mutateAsync(
+      //    { product_id: product?._id as string, buy_count: buyCount },
+      //    {
+      //       onSuccess: (data) => {
+      //          const purchase = data.data.data
+      //          navigate(path.cart, {
+      //             state: {
+      //                purchaseId: purchase._id
+      //             }
+      //          })
+      //       }
+      //    }
+      // )
    }
 
    useEffect(() => {

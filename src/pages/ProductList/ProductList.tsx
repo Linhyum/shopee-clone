@@ -19,7 +19,7 @@ export default function ProductList() {
       queryKey: ['products', queryConfig], //queryConfig giống dependencies trong useEffect
       queryFn: () => productApi.getProductList(queryConfig as ProductListParams), //vì queryConfig toàn là string nên phải ép kiểu về ProductListParams
       keepPreviousData: true, // giữ lại data trước để mỗi lần fetch lại không bị giật trang web
-      staleTime: 3 * 60 * 1000
+      staleTime: 3 * 60 * 1000 //để khi chọn danh mục bên đây rồi thì qua bên 'có thể bạn cũng thích(productDetails) không gọi lại đó nữa
    })
 
    const { data: categoriesData } = useQuery({

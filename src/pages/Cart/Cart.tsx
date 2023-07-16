@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { produce } from 'immer'
 import { keyBy } from 'lodash'
-import React, { useContext, useEffect, useMemo, useState } from 'react'
+import React, { useContext, useEffect, useMemo } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { buyProducts, deletePurchases, getPurchases, updatePurchases } from 'src/apis/purchase.api'
 import QuantityController from 'src/components/QuantityController/QuantityController'
@@ -245,7 +245,7 @@ export default function Cart() {
                      </div>
                   </div>
 
-                  <div className='sticky bottom-0 border border-gray-100 z-10 mt-8 flex flex-col rounded-sm bg-white p-5 shadow sm:flex-row sm:items-center'>
+                  <div className='sticky bottom-0 border border-gray-100 z-10 mt-8 flex flex-col rounded-sm bg-white p-5 shadow md:flex-row md:items-center'>
                      <div className='flex gap-x-5 items-center text-base'>
                         <div className='flex flex-shrink-0 items-center justify-center'>
                            <input

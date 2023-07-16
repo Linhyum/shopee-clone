@@ -86,6 +86,7 @@ export default function Login() {
                      name='password'
                      placeholder='Password'
                      type='password'
+                     hasIcon
                      register={register}
                      errorMessage={errors.password?.message}
                   />

@@ -1,5 +1,7 @@
 import { User } from 'src/types/user.type'
 
+export const LocalStorageEventTarget = new EventTarget()
+
 //nếu có access token trong local storage thì login rồi(set isAuthenticated là true)
 export const setAccessTokenFromLS = (access_token: string) => {
    localStorage.setItem('access_token', access_token)
@@ -9,6 +11,10 @@ export const setAccessTokenFromLS = (access_token: string) => {
 export const clearLS = () => {
    localStorage.removeItem('access_token')
    localStorage.removeItem('profile')
+
+   //khi xoá localstorage thì sẽ tự động reload dữ liệu mà k cần f5
+   const clearLSEvent = new Event('clearLS')
+   LocalStorageEventTarget.dispatchEvent(clearLSEvent)
 }
 // get phải return còn set,remove thì k
 export const getAccessTokenFromLS = () => localStorage.getItem('access_token') || ''

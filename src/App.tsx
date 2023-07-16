@@ -3,12 +3,16 @@ import ProductList from './pages/ProductList/ProductList'
 import Login from './pages/Login/Login'
 import Register from './pages/Register/Register'
 import MainLayout from './layouts/MainLayout/MainLayout'
-import Profile from './pages/Profile/Profile'
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import { AppContext } from './contexts/app.context'
 import { path } from './constants/path'
 import ProductDetails from './pages/ProductDetails/ProductDetails'
 import Cart from './pages/Cart/Cart'
+import { LocalStorageEventTarget } from './utils/auth'
+import Profile from './pages/User/pages/Profile/Profile'
+import UserLayout from './pages/User/layout/UserLayout/UserLayout'
+import ChangePassword from './pages/User/pages/ChangePassword/ChangePassword'
+import HistoryPurchase from './pages/User/pages/HistoryPurchase/HistoryPurchase'
 
 function ProtectedRoute() {
    const { isAuthenticated } = useContext(AppContext)
@@ -23,6 +27,16 @@ function RejectedRoute() {
 }
 
 export default function App() {
+   const { reset } = useContext(AppContext)
+
+   //khi gọi dispatchEvent bên auth.ts thì sẽ chạy vào đây để reset lại dữ liệu
+   useEffect(() => {
+      LocalStorageEventTarget.addEventListener('clearLS', reset)
+      return () => {
+         LocalStorageEventTarget.removeEventListener('clearLS', reset)
+      }
+   }, [reset])
+
    return (
       <Routes>
          <Route
@@ -43,14 +57,12 @@ export default function App() {
          />
 
          <Route element={<ProtectedRoute />}>
-            <Route
-               path={path.profile}
-               element={
-                  <MainLayout>
-                     <Profile />
-                  </MainLayout>
-               }
-            />
+            <Route element={<UserLayout />}>
+               <Route path={path.profile} element={<Profile />} />
+               <Route path={path.changePassword} element={<ChangePassword />} />
+               <Route path={path.historyPurchase} element={<HistoryPurchase />} />
+            </Route>
+
             <Route
                path={path.cart}
                element={

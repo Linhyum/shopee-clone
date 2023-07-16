@@ -89,12 +89,14 @@ export default function Register() {
                      name='password'
                      placeholder='Password'
                      type='password'
+                     hasIcon
                      register={register}
                      errorMessage={errors.password?.message}
                   />
                   <Input
                      name='confirm_password'
                      placeholder='Confirm Password'
+                     hasIcon
                      type='password'
                      register={register}
                      errorMessage={errors.confirm_password?.message}

@@ -19,3 +19,58 @@ body {
 .Toastify {
    @apply text-base;
 }
+.btn-add-img {
+   position: relative;
+   padding: 8px 16px;
+   display: block;
+   overflow: hidden;
+}
+
+.btn-add-img span {
+   position: relative;
+   color: #fff;
+   z-index: 1;
+}
+
+.btn-add-img > div {
+   position: absolute;
+   top: -80px;
+   left: 0;
+   width: 200px;
+   height: 200px;
+   background: #ff3e00;
+   transition: 0.5s;
+}
+
+.btn-add-img > div::after,
+.btn-add-img > div::before {
+   content: '';
+   width: 200%;
+   height: 200%;
+   position: absolute;
+}
+
+.btn-add-img > div::before {
+   border-radius: 45%;
+   background: rgba(20, 20, 20, 1);
+   animation: animate 5s linear infinite;
+}
+
+.btn-add-img > div::after {
+   border-radius: 40%;
+   background: rgba(20, 20, 20, 0.5);
+   animation: animate 10s linear infinite;
+}
+
+.btn-add-img:hover > div {
+   top: -150px;
+}
+
+@keyframes animate {
+   0% {
+      transform: translate(-50%, -75%) rotate(0deg);
+   }
+   100% {
+      transform: translate(-50%, -75%) rotate(360deg);
+   }
+}

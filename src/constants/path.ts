@@ -1,6 +1,5 @@
 export const path = {
    home: '/',
-   profile: '/profile',
    login: '/login',
    register: '/register',
    logout: '/logout',
@@ -8,5 +7,8 @@ export const path = {
    categories: '/categories',
    productDetails: '/:id',
    purchases: '/purchases',
-   cart: '/cart'
+   cart: '/cart',
+   profile: '/user/profile',
+   changePassword: '/user/password',
+   historyPurchase: '/user/purchase'
 } as const

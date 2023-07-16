@@ -11,7 +11,10 @@ import useQueryConfig from 'src/hooks/useQueryConfig'
 import { getPurchases } from 'src/apis/purchase.api'
 import { purchasesStatus } from 'src/constants/purchase'
 import { formatNumber, generateNameId } from 'src/utils/utils'
+import useQueryProfile from 'src/hooks/useQueryProfile'
 export default function Header({ isCart }: { isCart?: boolean }) {
+   const { profileData } = useQueryProfile()
+
    const queryClient = useQueryClient()
    const navigate = useNavigate()
    const { handleSubmit, register } = useForm<{ search: string }>({
@@ -21,7 +24,7 @@ export default function Header({ isCart }: { isCart?: boolean }) {
    })
    const queryConfig = useQueryConfig()
 
-   const { isAuthenticated, setIsAuthenticated, profile, setProfile } = useContext(AppContext)
+   const { isAuthenticated, setIsAuthenticated, setProfile } = useContext(AppContext)
    const logoutMutation = useMutation({
       mutationFn: () => authApi.logout(),
       onSuccess: () => {
@@ -100,7 +103,7 @@ export default function Header({ isCart }: { isCart?: boolean }) {
                            <Link className='px-4 py-2 hover:bg-blue-50 hover:text-blue-500 ' to={path.profile}>
                               Tài khoản của tôi
                            </Link>
-                           <Link className='px-4 py-2 hover:bg-blue-50 hover:text-blue-500' to={path.home}>
+                           <Link className='px-4 py-2 hover:bg-blue-50 hover:text-blue-500' to={path.historyPurchase}>
                               Đơn mua
                            </Link>
                            <Button
@@ -116,10 +119,13 @@ export default function Header({ isCart }: { isCart?: boolean }) {
                   >
                      <img
                         className='h-6 w-6 rounded-full object-cover'
-                        src='https://bsnl.ch/wp-content/uploads/2019/03/avatar-default-circle.png'
+                        src={
+                           `https://api-ecom.duthanhduoc.com/images/${profileData?.avatar}` ||
+                           'https://bsnl.ch/wp-content/uploads/2019/03/avatar-default-circle.png'
+                        }
                         alt='avartar'
                      />
-                     <span>{profile?.email}</span>
+                     <span>{profileData?.name || profileData?.email}</span>
                   </Popover>
                ) : (
                   <div className='flex items-center gap-x-3'>
