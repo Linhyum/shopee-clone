@@ -1,10 +1,13 @@
 import { Link, createSearchParams } from 'react-router-dom'
 import { path } from 'src/constants/path'
 import { QueryConfig } from '../../ProductList'
+import { useTranslation } from 'react-i18next'
 interface Props {
    queryConfig: QueryConfig
 }
 export default function RatingStars({ queryConfig }: Props) {
+   const { t } = useTranslation()
+
    return (
       <ul className='ml-2 flex flex-col gap-y-2 py-1 pt-2'>
          {Array(5)
@@ -72,7 +75,7 @@ export default function RatingStars({ queryConfig }: Props) {
                               </svg>
                            )
                         })}
-                     {index > 0 && <span className='translate-y-[1px] text-sm'>Trở lên</span>}
+                     {index > 0 && <span className='translate-y-[1px] text-sm'>{t('more')}</span>}
                   </Link>
                </li>
             ))}

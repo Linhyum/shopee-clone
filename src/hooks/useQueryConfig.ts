@@ -1,6 +1,7 @@
 import { QueryConfig } from 'src/pages/ProductList/ProductList'
 import useQueryParams from './useQueryParams'
-import { isUndefined, omitBy } from 'lodash'
+import omitBy from 'lodash/omitBy'
+import isUndefined from 'lodash/isUndefined'
 
 export default function useQueryConfig() {
    const queryParams: QueryConfig = useQueryParams() //lấy ra các param trên thanh url(?search=name&other=acending)==>{search:name,other:acending}

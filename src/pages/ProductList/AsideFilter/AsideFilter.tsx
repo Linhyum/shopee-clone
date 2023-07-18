@@ -10,13 +10,16 @@ import { FormDataPrice, priceSchema } from 'src/utils/rules'
 import { InputNumber } from 'src/components/InputNumber/InputNumber'
 import { NoUndefinedField } from 'src/types/utils.type'
 import RatingStars from './RatingStars/RatingStars'
-import { omit } from 'lodash'
+import omit from 'lodash/omit'
+import { ObjectSchema } from 'yup'
+import { useTranslation } from 'react-i18next'
 interface Props {
    queryConfig: QueryConfig
    categoriesData: CategoryType[]
 }
 type FormData = NoUndefinedField<FormDataPrice>
 export default function AsideFilter({ queryConfig, categoriesData }: Props) {
+   const { t } = useTranslation()
    const { category } = queryConfig
    const navigate = useNavigate()
    const {
@@ -31,7 +34,7 @@ export default function AsideFilter({ queryConfig, categoriesData }: Props) {
          price_min: ''
       },
       mode: 'onSubmit',
-      resolver: yupResolver(priceSchema)
+      resolver: yupResolver<FormData>(priceSchema as ObjectSchema<FormData>)
    })
    const onSubmit = handleSubmit((data) => {
       navigate({
@@ -72,7 +75,7 @@ export default function AsideFilter({ queryConfig, categoriesData }: Props) {
                   d='M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zM3.75 12h.007v.008H3.75V12zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm-.375 5.25h.007v.008H3.75v-.008zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z'
                />
             </svg>
-            Tất cả danh mục
+            {t('all categories')}
          </Link>
          <Seperate />
          <ul className='ml-4 flex flex-col gap-y-3'>
@@ -94,7 +97,7 @@ export default function AsideFilter({ queryConfig, categoriesData }: Props) {
                            <polygon points='4 3.5 0 0 0 7' />
                         </svg>
                      )}
-                     {categoryItem.name}
+                     {t(categoryItem.name as 'Đồng hồ' | 'Áo thun' | 'Điện thoại')}
                   </Link>
                </li>
             ))}
@@ -117,10 +120,10 @@ export default function AsideFilter({ queryConfig, categoriesData }: Props) {
                   />
                </g>
             </svg>
-            BỘ LỌC TÌM KIẾM
+            {t('filter')}
          </div>
          <Seperate />
-         <span>Khoảng giá</span>
+         <span>{t('price range')}</span>
          <form onSubmit={onSubmit} className='py-2'>
             <div className='flex items-center gap-x-2'>
                <Controller
@@ -128,8 +131,8 @@ export default function AsideFilter({ queryConfig, categoriesData }: Props) {
                   name='price_min'
                   render={({ field }) => (
                      <InputNumber
-                        className=''
-                        placeholder='₫ TỪ'
+                        className='flex-1'
+                        placeholder={`₫ ${t('from')}`}
                         classNameInput='h-[30px] w-full rounded-sm border border-gray-300 p-1 outline-none focus:border-gray-500 focus:shadow-sm'
                         {...field}
                         onChange={(e) => {
@@ -146,8 +149,8 @@ export default function AsideFilter({ queryConfig, categoriesData }: Props) {
                   name='price_max'
                   render={({ field }) => (
                      <InputNumber
-                        className=''
-                        placeholder='₫ ĐẾN'
+                        className='flex-1'
+                        placeholder={`₫ ${t('to')}`}
                         classNameInput='h-[30px] w-full rounded-sm border border-gray-300 p-1 outline-none focus:border-gray-500 focus:shadow-sm'
                         {...field}
                         onChange={(e) => {
@@ -161,15 +164,15 @@ export default function AsideFilter({ queryConfig, categoriesData }: Props) {
             </div>
             <div className='min-h-[20px] text-center text-sm text-red-500'>{errors.price_min?.message}</div>
             <Button type='submit' className='w-full bg-primary py-2 text-sm text-white hover:opacity-90'>
-               ÁP DỤNG
+               {t('apply')}
             </Button>
          </form>
          <Seperate />
-         <span>Đánh giá</span>
+         <span>{t('rating')}</span>
          <RatingStars queryConfig={queryConfig} />
          <Seperate />
          <Button onClick={handleDeleteAll} className='mt-1 w-full bg-primary py-2 text-sm text-white hover:opacity-90'>
-            XOÁ TẤT CẢ
+            {t('deleteAll')}
          </Button>
       </>
    )

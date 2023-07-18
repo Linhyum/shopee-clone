@@ -8,7 +8,12 @@ import Input from 'src/components/Input/Input'
 import { FormDataRegister, registerSchema } from 'src/utils/rules'
 import { useMutation } from '@tanstack/react-query'
 import { authApi } from 'src/apis/auth.api'
-import { omit } from 'lodash'
+
+// import { omit } from 'lodash' //khi import omit thì nó sẽ import cả thư viện lodash vì nó k có tính chất tree-shaking(loại bỏ mã chết)
+
+//có tính năng tree-shaking
+import omit from 'lodash/omit'
+
 import { isAxiosUnprocessableEntity } from 'src/utils/utils'
 import { ErrorResponse } from 'src/types/utils.type'
 import { AppContext } from 'src/contexts/app.context'

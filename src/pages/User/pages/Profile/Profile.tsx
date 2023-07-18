@@ -7,7 +7,7 @@ import { FormDataUser, userSchema } from 'src/utils/rules'
 import { useForm, Controller } from 'react-hook-form'
 import { InputNumber } from 'src/components/InputNumber/InputNumber'
 import { useContext, useEffect, useMemo, useState } from 'react'
-import { range } from 'lodash'
+import range from 'lodash/range'
 import { toast } from 'react-toastify'
 import useQueryProfile from 'src/hooks/useQueryProfile'
 import { AppContext } from 'src/contexts/app.context'
@@ -16,7 +16,7 @@ import { isAxiosUnprocessableEntity } from 'src/utils/utils'
 import { ErrorResponse } from 'src/types/utils.type'
 import InputFile from 'src/components/InputFile/InputFile'
 import { yupResolver } from '@hookform/resolvers/yup'
-
+import { useTranslation } from 'react-i18next'
 type FormData = Pick<FormDataUser, 'address' | 'avatar' | 'date_of_birth' | 'name' | 'phone'>
 const profileChema = userSchema.pick(['address', 'avatar', 'date_of_birth', 'name', 'phone'])
 
@@ -24,6 +24,7 @@ type FormDataError = Omit<FormData, 'date_of_birth'> & {
    date_of_birth?: string
 }
 export default function Profile() {
+   const { t } = useTranslation()
    const [file, setFile] = useState<File>() //file là kiểu dữ liệu có sẵn
    const previewImage = useMemo(() => (file ? URL.createObjectURL(file) : ''), [file]) //lấy ra file ảnh
 
@@ -43,7 +44,7 @@ export default function Profile() {
          phone: ''
       },
       mode: 'onSubmit',
-      resolver: yupResolver(profileChema)
+      resolver: yupResolver<FormData>(profileChema)
    })
 
    //lấy ra profile trong localstorage
@@ -116,8 +117,8 @@ export default function Profile() {
    }, [profileData?.name])
    return (
       <div className='bg-white rounded shadow-lg p-3 md:p-6'>
-         <h1 className='capitalize text-lg mb-1'>hồ sơ của tôi</h1>
-         <p className='text-gray-700'>Quản lý thông tin hồ sơ để bảo mật tài khoản</p>
+         <h1 className='capitalize text-lg mb-1'>{t('myProfile')}</h1>
+         <p className='text-gray-700'>{t('manage')}</p>
          <Seperate />
          <form
             onSubmit={onSubmit}
@@ -129,11 +130,13 @@ export default function Profile() {
                   <div className='w-full sm:w-[80%]'>{profileData?.email}</div>
                </div>
                <div className='flex flex-col sm:flex-row items-center gap-y-1 gap-x-5'>
-                  <div className='w-full sm:w-[20%] sm:text-right text-gray-700 capitalize sm:-translate-y-3'>Tên:</div>
+                  <div className='w-full sm:w-[20%] sm:text-right text-gray-700 capitalize sm:-translate-y-3'>
+                     {t('name')}:
+                  </div>
                   <Input
                      name='name'
                      className='w-full sm:w-[80%] flex flex-col gap-y-1'
-                     placeholder='Tên'
+                     placeholder={t('name')}
                      classNameInput='w-full h-10 border px-3 border-gray-300 focus:border-blue-500 outline-none rounded'
                      register={register}
                      errorMessage={errors.name?.message}
@@ -141,7 +144,7 @@ export default function Profile() {
                </div>
                <div className='flex flex-col sm:flex-row items-center gap-y-1 gap-x-5'>
                   <div className='w-full sm:w-[20%] sm:text-right text-gray-700 capitalize sm:-translate-y-3'>
-                     Số điện thoại:
+                     {t('phoneNumber')}:
                   </div>
                   <Controller
                      control={control}
@@ -150,7 +153,7 @@ export default function Profile() {
                         <InputNumber
                            errorMessage={errors.phone?.message}
                            className='w-full sm:w-[80%] flex flex-col gap-y-1'
-                           placeholder='Số điện thoại'
+                           placeholder={t('phoneNumber')}
                            classNameInput='w-full h-10 border px-3 border-gray-300 focus:border-blue-500 outline-none rounded'
                            {...field}
                            onChange={field.onChange}
@@ -160,14 +163,14 @@ export default function Profile() {
                </div>
                <div className='flex flex-col sm:flex-row items-center gap-y-1 gap-x-5'>
                   <div className='w-full sm:w-[20%] sm:text-right text-gray-700 capitalize sm:-translate-y-3'>
-                     Địa chỉ:
+                     {t('address')}:
                   </div>
                   <Input
                      name='address'
                      register={register}
                      errorMessage={errors.address?.message}
                      className='w-full sm:w-[80%] flex flex-col gap-y-1'
-                     placeholder='Địa chỉ'
+                     placeholder={t('address')}
                      classNameInput='w-full h-10 border px-3 border-gray-300 focus:border-blue-500 outline-none rounded'
                   />
                </div>
@@ -193,7 +196,7 @@ export default function Profile() {
                         disabled={updateProfileMutation.isLoading}
                         className='bg-primary rounded-sm text-white w-full sm:w-28 h-10 hover:bg-primary/90'
                      >
-                        Lưu thông tin
+                        {t('saveInfo')}
                      </Button>
                   </div>
                </div>
@@ -212,8 +215,8 @@ export default function Profile() {
                   />
                   <InputFile onChange={setFile} />
                   <div className='text-secondary'>
-                     <p>Dụng lượng file tối đa 1 MB</p>
-                     <p>Định dạng:.JPEG, .PNG</p>
+                     <p>{t('fileSize')}</p>
+                     <p>{t('fileExt')}</p>
                   </div>
                </div>
             </div>
@@ -230,6 +233,7 @@ interface Props {
 }
 
 function DateSelect({ errorMessage, onChange, value }: Props) {
+   const { t } = useTranslation()
    const [date, setDate] = useState({
       day: 1,
       month: 0, //do tháng trong date bắt đầu từ 0
@@ -255,7 +259,7 @@ function DateSelect({ errorMessage, onChange, value }: Props) {
    return (
       <>
          <div className='flex flex-col sm:flex-row items-center gap-y-1 gap-x-5'>
-            <div className='w-full sm:w-[20%] sm:text-right text-gray-700 capitalize'>Ngày sinh:</div>
+            <div className='w-full sm:w-[20%] sm:text-right text-gray-700 capitalize'>{t('dateOfBirth')}:</div>
             <div className='flex gap-x-3 w-full sm:w-[80%]'>
                <select
                   onChange={handleChange}
@@ -263,7 +267,7 @@ function DateSelect({ errorMessage, onChange, value }: Props) {
                   value={date.day}
                   className='focus:border-blue-500 cursor-pointer px-2 w-full h-10 rounded border border-gray-300 outline-none'
                >
-                  <option disabled>Ngày</option>
+                  <option disabled>{t('day')}</option>
                   {/* range của lodash giống render array list */}
                   {range(31).map((item) => (
                      <option key={item} value={item + 1}>
@@ -277,7 +281,7 @@ function DateSelect({ errorMessage, onChange, value }: Props) {
                   value={date.month}
                   className='focus:border-blue-500 cursor-pointer px-2 w-full h-10 rounded border border-gray-300 outline-none'
                >
-                  <option disabled>Tháng</option>
+                  <option disabled>{t('month')}</option>
                   {/* do tháng trong date bắt đầu từ 0 */}
                   {range(12).map((item) => (
                      <option key={item} value={item}>
@@ -291,7 +295,7 @@ function DateSelect({ errorMessage, onChange, value }: Props) {
                   value={date.year}
                   className='focus:border-blue-500 cursor-pointer px-2 w-full h-10 rounded border border-gray-300 outline-none'
                >
-                  <option disabled>Năm</option>
+                  <option disabled>{t('year')}</option>
                   {range(34).map((item) => (
                      <option key={item} value={1990 + item}>
                         {1990 + item}

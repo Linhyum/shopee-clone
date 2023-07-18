@@ -1,10 +1,26 @@
 import axios, { AxiosError, HttpStatusCode } from 'axios'
 import { PurchaseType } from 'src/types/purchase.type'
+import { ErrorResponse } from 'src/types/utils.type'
 
 //kiểm tra lỗi trả về có phải của axios và có status 422 k
 export function isAxiosUnprocessableEntity<FormError>(error: unknown): error is AxiosError<FormError> {
    // eslint-disable-next-line import/no-named-as-default-member
    return axios.isAxiosError(error) && error.response?.status === HttpStatusCode.UnprocessableEntity //422
+}
+
+//kiểm tra lỗi trả về có phải của axios và có status 401 k
+export function isAxiosUnauthorizedError<UnauthorizedError>(error: unknown): error is AxiosError<UnauthorizedError> {
+   // eslint-disable-next-line import/no-named-as-default-member
+   return axios.isAxiosError(error) && error.response?.status === HttpStatusCode.Unauthorized //4-1
+}
+
+//trả về lỗi khi token hết hạn
+export function isAxiosExpiredTokenError<UnauthorizedError>(error: unknown): error is AxiosError<UnauthorizedError> {
+   // eslint-disable-next-line import/no-named-as-default-member
+   return (
+      isAxiosUnauthorizedError<ErrorResponse<{ message: string; name: string }>>(error) &&
+      error.response?.data?.data?.name === 'EXPIRED_TOKEN'
+   )
 }
 
 export function formatNumber(number: number) {

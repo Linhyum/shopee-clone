@@ -1,10 +1,13 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef } from 'react'
 import { toast } from 'react-toastify'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
    onChange?: (file?: File) => void
 }
 export default function InputFile({ onChange }: Props) {
+   const { t } = useTranslation()
+
    const fileInputRef = useRef<HTMLInputElement>(null)
 
    //upload image
@@ -33,7 +36,7 @@ export default function InputFile({ onChange }: Props) {
             accept='.jpg,.jpeg,.png'
          />
          <button onClick={handleUpload} type='button' className='btn-add-img w-28 h-10 rounded'>
-            <span>Chọn ảnh</span>
+            <span>{t('selectImage')}</span>
             <div />
          </button>
       </>

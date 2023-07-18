@@ -8,7 +8,7 @@ import { purchasesStatus } from 'src/constants/purchase'
 import useQueryParams from 'src/hooks/useQueryParams'
 import { PurchaseListStatus } from 'src/types/purchase.type'
 import { formatNumber, generateNameId } from 'src/utils/utils'
-
+import { useTranslation } from 'react-i18next'
 const purchaseLinks = [
    { text: 'Tất cả', link: purchasesStatus.all },
    { text: 'Chờ xác nhận', link: purchasesStatus.waitForComfirmation },
@@ -19,6 +19,8 @@ const purchaseLinks = [
 ]
 
 export default function HistoryPurchase() {
+   const { t } = useTranslation()
+
    const param: { status?: string } = useQueryParams() //mặc định param lấy trên url về đều là string
    const status: number = Number(param.status) || purchasesStatus.all
 
@@ -30,7 +32,7 @@ export default function HistoryPurchase() {
    useEffect(() => {
       document.body.scrollIntoView({ behavior: 'smooth', block: 'start' })
    }, [status])
-   document.title = 'Đơn mua | Shopee Clone'
+   document.title = `${t('purchase')} | Shopee Clone`
    return (
       <>
          <div className='bg-white sticky top-0 rounded-sm grid grid-cols-12 items-center'>
@@ -48,7 +50,15 @@ export default function HistoryPurchase() {
                      search: createSearchParams({ status: purchaseLink.link.toString() }).toString()
                   }}
                >
-                  {purchaseLink.text}
+                  {t(
+                     purchaseLink.text as
+                        | 'Tất cả'
+                        | 'Chờ xác nhận'
+                        | 'Chờ lấy hàng'
+                        | 'Đang giao'
+                        | 'Đã giao'
+                        | 'Đã huỷ'
+                  )}
                </Link>
             ))}
          </div>
@@ -88,7 +98,7 @@ export default function HistoryPurchase() {
                                        </span>
                                     </div>
                                     <div>
-                                       <span>Tổng giá tiền</span>
+                                       <span>{t('totalPrice')}</span>
                                        <span className='text-lg ml-3 text-primary'>
                                           ₫{formatNumber(purchase.price * purchase.buy_count)}
                                        </span>
@@ -107,7 +117,7 @@ export default function HistoryPurchase() {
                         alt='no-purchase'
                         className='w-28 h-28 object-cover'
                      />
-                     <p className='text-lg'>Chưa có đơn hàng</p>
+                     <p className='text-lg'>{t('noPurchase')}</p>
                   </div>
                )}
             </>

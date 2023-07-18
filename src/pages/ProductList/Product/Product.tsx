@@ -3,8 +3,10 @@ import ProductRating from 'src/components/ProductRating/ProductRating'
 import { path } from 'src/constants/path'
 import { ProductType } from 'src/types/product.type'
 import { formatNumber, formatNumberWithK, generateNameId } from 'src/utils/utils'
-
+import { useTranslation } from 'react-i18next'
 export default function Product({ product }: { product: ProductType }) {
+   const { t } = useTranslation()
+
    return (
       <Link
          to={`${path.home}${generateNameId({ name: product.name, id: product._id })}`}
@@ -25,7 +27,7 @@ export default function Product({ product }: { product: ProductType }) {
                <ProductRating rating={product.rating} />
                <div className='flex items-center gap-x-1'>
                   <span>{formatNumberWithK(product.sold)}</span>
-                  <span>Đã bán</span>
+                  <span>{t('sold')}</span>
                </div>
             </div>
          </div>

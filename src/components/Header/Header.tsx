@@ -11,10 +11,12 @@ import useQueryConfig from 'src/hooks/useQueryConfig'
 import { getPurchases } from 'src/apis/purchase.api'
 import { purchasesStatus } from 'src/constants/purchase'
 import { formatNumber, generateNameId } from 'src/utils/utils'
-import useQueryProfile from 'src/hooks/useQueryProfile'
+import { useTranslation } from 'react-i18next'
+import useLocalStorage from 'src/hooks/useLocalStorage'
 export default function Header({ isCart }: { isCart?: boolean }) {
-   const { profileData } = useQueryProfile()
-
+   const [, setValue] = useLocalStorage<string>('language', 'vi')
+   const { i18n, t } = useTranslation()
+   const { profile } = useContext(AppContext)
    const queryClient = useQueryClient()
    const navigate = useNavigate()
    const { handleSubmit, register } = useForm<{ search: string }>({
@@ -54,6 +56,11 @@ export default function Header({ isCart }: { isCart?: boolean }) {
    })
    const purchaseInCartData = data?.data.data
 
+   const changeLanguages = (lng: 'en' | 'vi') => {
+      i18n.changeLanguage(lng)
+      setValue(lng)
+   }
+
    return (
       <header
          style={{
@@ -65,8 +72,18 @@ export default function Header({ isCart }: { isCart?: boolean }) {
                <Popover
                   renderPopover={
                      <div className='flex w-[180px] flex-col gap-y-3 rounded-sm bg-white px-6 py-4 shadow-md md:text-base'>
-                        <button className='cursor-pointer text-left hover:text-primary'>Tiếng Việt</button>
-                        <button className='cursor-pointer text-left hover:text-primary'>English</button>
+                        <button
+                           onClick={() => changeLanguages('vi')}
+                           className='cursor-pointer text-left hover:text-primary'
+                        >
+                           Tiếng Việt
+                        </button>
+                        <button
+                           onClick={() => changeLanguages('en')}
+                           className='cursor-pointer text-left hover:text-primary'
+                        >
+                           English
+                        </button>
                      </div>
                   }
                >
@@ -84,7 +101,7 @@ export default function Header({ isCart }: { isCart?: boolean }) {
                         d='M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418'
                      />
                   </svg>
-                  <span>Tiếng Việt</span>
+                  <span>{i18n.language === 'vi' ? 'Tiếng Việt' : 'English'}</span>
                   <svg
                      xmlns='http://www.w3.org/2000/svg'
                      fill='none'
@@ -101,10 +118,10 @@ export default function Header({ isCart }: { isCart?: boolean }) {
                      renderPopover={
                         <div className='flex flex-col overflow-hidden rounded-sm bg-white shadow-md md:text-base'>
                            <Link className='px-4 py-2 hover:bg-blue-50 hover:text-blue-500 ' to={path.profile}>
-                              Tài khoản của tôi
+                              {t('account')}
                            </Link>
                            <Link className='px-4 py-2 hover:bg-blue-50 hover:text-blue-500' to={path.historyPurchase}>
-                              Đơn mua
+                              {t('purchase')}
                            </Link>
                            <Button
                               onClick={handleLogout}
@@ -112,7 +129,7 @@ export default function Header({ isCart }: { isCart?: boolean }) {
                               disabled={logoutMutation.isLoading}
                               className='px-4 py-2  text-left hover:bg-blue-50 hover:text-blue-500'
                            >
-                              Đăng xuất
+                              {t('logout')}
                            </Button>
                         </div>
                      }
@@ -120,21 +137,21 @@ export default function Header({ isCart }: { isCart?: boolean }) {
                      <img
                         className='h-6 w-6 rounded-full object-cover'
                         src={
-                           `https://api-ecom.duthanhduoc.com/images/${profileData?.avatar}` ||
+                           `https://api-ecom.duthanhduoc.com/images/${profile?.avatar}` ||
                            'https://bsnl.ch/wp-content/uploads/2019/03/avatar-default-circle.png'
                         }
                         alt='avartar'
                      />
-                     <span>{profileData?.name || profileData?.email}</span>
+                     <span>{profile?.name || profile?.email}</span>
                   </Popover>
                ) : (
                   <div className='flex items-center gap-x-3'>
-                     <Link className='hover:opacity-70' to={path.register}>
-                        Đăng Ký
+                     <Link className='capitalize hover:opacity-70' to={path.register}>
+                        {t('register')}
                      </Link>
                      <span className='h-4 border-r-[1px] border-r-white/40' />
-                     <Link className='hover:opacity-70' to={path.login}>
-                        Đăng Nhập
+                     <Link className='capitalize hover:opacity-70' to={path.login}>
+                        {t('login')}
                      </Link>
                   </div>
                )}
@@ -210,7 +227,7 @@ export default function Header({ isCart }: { isCart?: boolean }) {
                            {purchaseInCartData && purchaseInCartData.length > 0 ? (
                               <>
                                  <div className='mb-3 px-2 font-medium capitalize text-secondary'>
-                                    sản phẩm mới thêm
+                                    {t('newAddProduct')}
                                  </div>
                                  <ul>
                                     {purchaseInCartData.slice(0, 5).map((purchase) => (
@@ -237,13 +254,13 @@ export default function Header({ isCart }: { isCart?: boolean }) {
                                  </ul>
                                  <div className='mt-4 flex items-center justify-between px-2'>
                                     <p className='capitalize text-secondary'>
-                                       {purchaseInCartData.slice(5).length || ''} thêm hàng vào giỏ
+                                       {purchaseInCartData.slice(5).length || ''} {t('AddItemToCart')}
                                     </p>
                                     <Link
                                        to={path.cart}
                                        className='rounded-sm bg-primary px-4 py-2 capitalize text-white hover:opacity-90'
                                     >
-                                       xem giỏ hàng
+                                       {t('viewCart')}
                                     </Link>
                                  </div>
                               </>
@@ -254,7 +271,7 @@ export default function Header({ isCart }: { isCart?: boolean }) {
                                     src='https://shopee-clone-ts.vercel.app/assets/no-product.b0846037.png'
                                     alt='no-product'
                                  />
-                                 <span className='capitalize'>Chưa có sản phẩm</span>
+                                 <span className='capitalize'>{t('noProduct')}</span>
                               </div>
                            )}
                         </div>
@@ -326,7 +343,7 @@ export default function Header({ isCart }: { isCart?: boolean }) {
                            </svg>
                         </div>
                         <div className='mx-4 h-6 w-[1px] bg-primary md:h-8' />
-                        <div className='capitalize text-base text-primary md:text-xl translate-y-1'>Giỏ hàng</div>
+                        <div className='capitalize text-base text-primary md:text-xl translate-y-1'>{t('cart')}</div>
                      </Link>
                      <form onSubmit={handleSearch} className='mt-3 md:mt-0 md:w-[50%]'>
                         <div className='flex rounded-sm border-2 border-primary'>

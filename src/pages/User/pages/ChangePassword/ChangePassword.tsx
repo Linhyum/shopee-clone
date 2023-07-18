@@ -9,9 +9,11 @@ import { updateProfile } from 'src/apis/user.api'
 import { toast } from 'react-toastify'
 import { isAxiosUnprocessableEntity } from 'src/utils/utils'
 import { ErrorResponse } from 'src/types/utils.type'
+import { useTranslation } from 'react-i18next'
 type FormData = Pick<FormDataUser, 'password' | 'new_password' | 'confirm_password'>
 const changePasswordChema = userSchema.pick(['password', 'new_password', 'confirm_password'])
 export default function ChangePassword() {
+   const { t } = useTranslation()
    const {
       handleSubmit,
       register,
@@ -61,24 +63,24 @@ export default function ChangePassword() {
       )
    })
 
-   document.title = 'Đổi mật khẩu | Shopee Clone'
+   document.title = `${t('changePassword')} | Shopee Clone`
    return (
       <div className='bg-white rounded shadow-lg p-3 md:p-6'>
-         <h1 className='capitalize text-lg mb-1'>đổi mật khẩu</h1>
-         <p className='text-gray-700'>Quản lý thông tin hồ sơ để bảo mật tài khoản</p>
+         <h1 className='capitalize text-lg mb-1'>{t('changePassword')}</h1>
+         <p className='text-gray-700'>{t('manage')}</p>
          <Seperate />
          <form onSubmit={onSubmit} className='pt-6'>
             <div className='flex flex-col gap-y-2 w-full md:w-[80%] lg:w-[70%]'>
                <div className='flex flex-col sm:flex-row items-center gap-y-1 gap-x-5'>
                   <div className='w-full sm:w-[20%] sm:text-right text-gray-700 capitalize sm:-translate-y-3'>
-                     Mật khẩu cũ:
+                     {t('oldPassword')}:
                   </div>
                   <Input
                      name='password'
                      type='password'
                      hasIcon
                      className=' w-full sm:w-[80%] flex flex-col gap-y-1'
-                     placeholder=' Mật khẩu cũ'
+                     placeholder={t('oldPassword')}
                      classNameInput='w-full h-10 border px-3 border-gray-300 focus:border-blue-500 outline-none rounded'
                      register={register}
                      errorMessage={errors.password?.message}
@@ -86,14 +88,14 @@ export default function ChangePassword() {
                </div>
                <div className='flex flex-col sm:flex-row items-center gap-y-1 gap-x-5'>
                   <div className='w-full sm:w-[20%] sm:text-right text-gray-700 capitalize sm:-translate-y-3'>
-                     Mật khẩu mới:
+                     {t('newPassword')}:
                   </div>
                   <Input
                      name='new_password'
                      type='password'
                      hasIcon
-                     className=' w-full sm:w-[80%] flex flex-col gap-y-1'
-                     placeholder='Mật khẩu mới'
+                     className='w-full sm:w-[80%] flex flex-col gap-y-1'
+                     placeholder={t('newPassword')}
                      classNameInput='w-full h-10 border px-3 border-gray-300 focus:border-blue-500 outline-none rounded'
                      register={register}
                      errorMessage={errors.new_password?.message}
@@ -102,14 +104,14 @@ export default function ChangePassword() {
 
                <div className='flex flex-col sm:flex-row items-center gap-y-1 gap-x-5'>
                   <div className='w-full sm:w-[20%] sm:text-right text-gray-700 capitalize sm:-translate-y-3'>
-                     Nhập lại mật khẩu:
+                     {t('confirmPassword')}:
                   </div>
                   <Input
                      name='confirm_password'
                      type='password'
                      hasIcon
-                     className=' w-full sm:w-[80%] flex flex-col gap-y-1'
-                     placeholder='Nhập lại mật khẩu'
+                     className='w-full sm:w-[80%] flex flex-col gap-y-1'
+                     placeholder={t('confirmPassword')}
                      classNameInput='w-full h-10 border px-3 border-gray-300 focus:border-blue-500 outline-none rounded'
                      register={register}
                      errorMessage={errors.confirm_password?.message}
@@ -125,7 +127,7 @@ export default function ChangePassword() {
                         type='submit'
                         className='bg-primary rounded-sm text-white w-full sm:w-28 h-10 hover:bg-primary/90'
                      >
-                        Lưu thông tin
+                        {t('saveInfo')}
                      </Button>
                   </div>
                </div>

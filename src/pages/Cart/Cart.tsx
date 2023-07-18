@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { produce } from 'immer'
-import { keyBy } from 'lodash'
+import keyBy from 'lodash/keyBy'
 import React, { useContext, useEffect, useMemo } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { buyProducts, deletePurchases, getPurchases, updatePurchases } from 'src/apis/purchase.api'
@@ -11,8 +11,9 @@ import { purchasesStatus } from 'src/constants/purchase'
 import { toast } from 'react-toastify'
 import { formatNumber, generateNameId, totalPrice, totalSavings } from 'src/utils/utils'
 import { AppContext } from 'src/contexts/app.context'
-
+import { useTranslation } from 'react-i18next'
 export default function Cart() {
+   const { t } = useTranslation()
    const location = useLocation()
    const choosenPurchaseIdFromLocation = (location.state as { purchaseId: string } | null)?.purchaseId
    const { extendedPurchases, setExtendedPurchases } = useContext(AppContext)
@@ -142,7 +143,7 @@ export default function Cart() {
       buyProductMutation.mutate(result)
    }
 
-   document.title = 'Giỏ hàng | Shopee Clone'
+   document.title = `${t('cart')} | Shopee Clone`
    return (
       <div className='bg-gray-200 py-16'>
          <div className='container'>
@@ -161,15 +162,15 @@ export default function Cart() {
                                        className='h-5 w-5 accent-primary cursor-pointer'
                                     />
                                  </div>
-                                 <div className='flex-grow '>Sản phẩm</div>
+                                 <div className='flex-grow'>{t('product')}</div>
                               </div>
                            </div>
                            <div className='col-span-6'>
                               <div className='grid grid-cols-5 text-center'>
-                                 <div className='col-span-2'>Đơn giá</div>
-                                 <div className='col-span-1'>Số lượng</div>
-                                 <div className='col-span-1'>Số tiền</div>
-                                 <div className='col-span-1'>Thao tác</div>
+                                 <div className='col-span-2'>{t('unitPrice')}</div>
+                                 <div className='col-span-1'>{t('quantity')}</div>
+                                 <div className='col-span-1'>{t('totalPrice')}</div>
+                                 <div className='col-span-1'>{t('action')}</div>
                               </div>
                            </div>
                         </div>
@@ -235,7 +236,7 @@ export default function Cart() {
                                           onClick={() => handleDetelePurchase(index)}
                                           className='transition-colors hover:text-primary'
                                        >
-                                          Xóa
+                                          {t('delete')}
                                        </button>
                                     </div>
                                  </div>
@@ -255,9 +256,11 @@ export default function Cart() {
                               className='h-5 w-5 accent-primary cursor-pointer'
                            />
                         </div>
-                        <button onClick={handleIsAllChecked}>Chọn tất cả ({extendedPurchases?.length})</button>
+                        <button onClick={handleIsAllChecked}>
+                           {t('selectAll')} ({extendedPurchases?.length})
+                        </button>
                         <button onClick={handleDetelePurchases} className='hover:text-primary transition-colors'>
-                           Xóa
+                           {t('delete')}
                         </button>
                      </div>
 
@@ -265,14 +268,14 @@ export default function Cart() {
                         <div>
                            <div className='flex items-center'>
                               <div className='text-base'>
-                                 Tổng thanh toán ({extendedPurchasesChecked.length} sản phẩm):
+                                 {t('totalPayment')} ({extendedPurchasesChecked.length} {t('item')}):
                               </div>
                               <div className='ml-2 text-2xl text-primary'>
                                  ₫{formatNumber(totalPrice(extendedPurchasesChecked))}
                               </div>
                            </div>
                            <div className='flex items-center text-sm gap-x-5 sm:justify-end'>
-                              <div className='text-secondary'>Tiết kiệm:</div>
+                              <div className='text-secondary'>{t('saved')}:</div>
                               <div className='text-primary'>
                                  ₫{formatNumber(totalSavings(extendedPurchasesChecked))}
                               </div>
@@ -284,7 +287,7 @@ export default function Cart() {
                            disabled={buyProductMutation.isLoading || extendedPurchasesChecked.length === 0}
                            className='mt-5 flex h-10 disabled:opacity-70 w-52 items-center justify-center bg-primary uppercase text-white hover:bg-primary/90 sm:ml-4 sm:mt-0'
                         >
-                           Mua hàng
+                           {t('checkOut')}
                         </Button>
                      </div>
                   </div>
@@ -296,13 +299,13 @@ export default function Cart() {
                      alt='no purchase'
                      className='mx-auto h-24 w-24'
                   />
-                  <div className='mt-5 font-bold text-secondary text-base'>Giỏ hàng của bạn còn trống</div>
+                  <div className='mt-5 font-bold text-secondary text-base'>{t('emty')}</div>
                   <div className='mt-5 text-center'>
                      <Link
                         to={path.home}
                         className='rounded-sm bg-primary px-10 py-2 uppercase text-white transition-all hover:bg-primary/90'
                      >
-                        Mua ngay
+                        {t('buyNow')}
                      </Link>
                   </div>
                </div>

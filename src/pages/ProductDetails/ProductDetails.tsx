@@ -12,7 +12,11 @@ import { addToCart } from 'src/apis/purchase.api'
 import { toast } from 'react-toastify'
 import { purchasesStatus } from 'src/constants/purchase'
 import { path } from 'src/constants/path'
+import { useTranslation } from 'react-i18next'
+
 export default function ProductDetails() {
+   const { t } = useTranslation()
+
    const navigate = useNavigate()
    const queryClient = useQueryClient()
    const [buyCount, setBuyCount] = useState<number>(1)
@@ -217,7 +221,7 @@ export default function ProductDetails() {
                            <div className='mx-4 h-4 w-[1px] bg-gray-300' />
                            <div className='flex items-center gap-x-1'>
                               <span>{formatNumberWithK(product.sold)}</span>
-                              <span className='text-secondary'>Đã bán</span>
+                              <span className='text-secondary'>{t('sold')}</span>
                            </div>
                         </div>
                         <div className='flex w-full flex-col items-center gap-x-3 bg-gray-50 p-5 md:flex-row'>
@@ -226,11 +230,11 @@ export default function ProductDetails() {
                            </span>
                            <span className='text-3xl text-primary'>₫{formatNumber(product.price)}</span>
                            <span className='rounded-sm bg-primary px-1 py-[2px] text-xs font-semibold text-white'>
-                              {Math.round((1 - product.price / product.price_before_discount) * 100)}% GIẢM
+                              {Math.round((1 - product.price / product.price_before_discount) * 100)}% {t('discount')}
                            </span>
                         </div>
                         <div className='flex flex-wrap items-center gap-5'>
-                           <span className='text-base text-secondary'>Số Lượng</span>
+                           <span className='text-base text-secondary'>{t('quantity')}</span>
                            <QuantityController
                               value={buyCount}
                               max={product.quantity}
@@ -238,7 +242,9 @@ export default function ProductDetails() {
                               onDecrease={handleBuyCount}
                               onType={handleBuyCount}
                            />
-                           <span className='text-secondary'>{product.quantity} Sản phẩm có sẵn</span>
+                           <span className='text-secondary'>
+                              {product.quantity} {t('available')}
+                           </span>
                         </div>
                         <div className='flex flex-wrap gap-4 text-base'>
                            <button
@@ -284,29 +290,29 @@ export default function ProductDetails() {
                                     />
                                  </g>
                               </svg>
-                              Thêm Vào Giỏ Hàng
+                              {t('addToCart')}
                            </button>
                            <button
                               onClick={buyNow}
                               className='rounded-sm bg-primary px-5 py-3 text-white hover:bg-primary/90'
                            >
-                              Mua Ngay
+                              {t('buyNow')}
                            </button>
                         </div>
                      </div>
                   </div>
                   <div className='mt-6 bg-white p-4 shadow'>
                      <div className='mb-10 bg-gray-50 px-5 py-3'>
-                        <span className='text-xl'>Mô Tả Sản Phẩm</span>
+                        <span className='text-xl'>{t('desc')}</span>
                      </div>
                      <div
-                        className='px-5 leading-loose'
+                        className='px-0 sm:px-5 leading-loose'
                         dangerouslySetInnerHTML={{
                            __html: DOMPurify.sanitize(product.description) //DOMPurify chống tấn công XSS
                         }}
                      />
                   </div>
-                  <div className='text-secondary my-6 text-base'>CÓ THỂ BẠN CŨNG THÍCH</div>
+                  <div className='text-secondary my-6 text-base'>{t('like')}</div>
                   {productsData && (
                      <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3'>
                         {productsData.data.data.products.map((productItem) => (

@@ -2,6 +2,7 @@ import { Link, NavLink, Outlet } from 'react-router-dom'
 import { path } from 'src/constants/path'
 import MainLayout from 'src/layouts/MainLayout/MainLayout'
 import classNames from 'classnames'
+import { useTranslation } from 'react-i18next'
 
 import useQueryProfile from 'src/hooks/useQueryProfile'
 export default function UserLayout() {
@@ -25,7 +26,7 @@ export default function UserLayout() {
 
 function UserSideNav() {
    const { profileData } = useQueryProfile()
-
+   const { t } = useTranslation()
    return (
       <>
          <div className='flex md:flex-col lg:flex-row items-center gap-x-2 mt-3'>
@@ -49,7 +50,7 @@ function UserSideNav() {
                         fillRule='evenodd'
                      />
                   </svg>
-                  <span className='text-secondary capitalize'>Sửa hồ sơ</span>
+                  <span className='text-secondary capitalize'>{t('editProfile')}</span>
                </Link>
             </div>
          </div>
@@ -75,7 +76,7 @@ function UserSideNav() {
                      d='M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z'
                   />
                </svg>
-               tài khoản của tôi
+               {t('account')}
             </NavLink>
             <NavLink
                to={path.changePassword}
@@ -97,7 +98,7 @@ function UserSideNav() {
                      d='M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z'
                   />
                </svg>
-               đổi mật khẩu
+               {t('changePassword')}
             </NavLink>
             <NavLink
                to={path.historyPurchase}
@@ -119,7 +120,7 @@ function UserSideNav() {
                      d='M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z'
                   />
                </svg>
-               đơn mua
+               {t('purchase')}
             </NavLink>
          </div>
       </>

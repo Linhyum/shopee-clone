@@ -4,7 +4,7 @@ interface Props {
 }
 export default function TogglePassword({ openEye, onClick }: Props) {
    return (
-      <button type='button' className='absolute z-10 -translate-y-1/2 cursor-pointer top-1/2 right-1' onClick={onClick}>
+      <button type='button' className='absolute -translate-y-1/2 cursor-pointer top-1/2 right-1' onClick={onClick}>
          {openEye ? (
             <svg
                xmlns='http://www.w3.org/2000/svg'
