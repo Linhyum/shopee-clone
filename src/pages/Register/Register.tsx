@@ -8,7 +8,7 @@ import Input from 'src/components/Input/Input'
 import { FormDataRegister, registerSchema } from 'src/utils/rules'
 import { useMutation } from '@tanstack/react-query'
 import { authApi } from 'src/apis/auth.api'
-
+import { useTranslation } from 'react-i18next'
 // import { omit } from 'lodash' //khi import omit thì nó sẽ import cả thư viện lodash vì nó k có tính chất tree-shaking(loại bỏ mã chết)
 
 //có tính năng tree-shaking
@@ -18,8 +18,10 @@ import { isAxiosUnprocessableEntity } from 'src/utils/utils'
 import { ErrorResponse } from 'src/types/utils.type'
 import { AppContext } from 'src/contexts/app.context'
 import { path } from 'src/constants/path'
+import { Helmet } from 'react-helmet'
 
 export default function Register() {
+   const { t } = useTranslation()
    const { setIsAuthenticated, setProfile } = useContext(AppContext)
    const {
       handleSubmit,
@@ -71,7 +73,6 @@ export default function Register() {
       })
    })
 
-   document.title = 'Đăng ký | Shopee Clone'
    return (
       <div
          style={{
@@ -79,9 +80,16 @@ export default function Register() {
          }}
          className='h-[600px] w-full bg-cover bg-center bg-no-repeat'
       >
+         <Helmet>
+            <title>{`${t('register')} | Shopee Clone`}</title>
+            <meta
+               name='description'
+               content='Trang Đăng ký của Shopee Clone. Đăng ký để tạo tài khoản mới và tham gia cộng đồng mua sắm trực tuyến với Shopee Clone.'
+            />
+         </Helmet>
          <div className='container flex h-full items-center justify-center md:justify-end'>
             <form onSubmit={onSubmit} className='w-full max-w-[450px] rounded-lg  bg-white p-7 shadow-md'>
-               <h2 className='mb-5 text-xl'>Đăng ký</h2>
+               <h2 className='mb-5 text-xl'>{t('register')}</h2>
                <div className='flex flex-col gap-y-3'>
                   <Input
                      name='email'
@@ -110,15 +118,15 @@ export default function Register() {
                      type='submit'
                      isLoading={registerAccountMutation.isLoading}
                      disabled={registerAccountMutation.isLoading}
-                     className='w-full rounded-md bg-primary py-3 text-base text-white disabled:opacity-50'
+                     className='w-full rounded-md bg-primary py-3 uppercase text-base text-white disabled:opacity-50'
                   >
-                     ĐĂNG KÝ
+                     {t('register')}
                   </Button>
                </div>
                <p className='mt-7 text-center text-base text-secondary'>
-                  Bạn đã có tài khoản?{' '}
+                  {t('hasAccount')}?{' '}
                   <Link className='text-primary' to={path.login}>
-                     Đăng nhập
+                     {t('login')}
                   </Link>
                </p>
             </form>

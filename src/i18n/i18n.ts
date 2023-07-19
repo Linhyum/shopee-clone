@@ -14,9 +14,11 @@ export const resources = {
          newAddProduct: 'Newly added products',
          AddItemToCart: 'Add item to cart',
          viewCart: 'View cart',
-         login: 'login',
-         register: 'register',
+         login: 'Login',
+         register: 'Register',
          noProduct: 'No products',
+         noAccount: 'Do not have an account',
+         hasAccount: 'Do you already have an account',
 
          //AsideFilter
          'all categories': 'All categories',
@@ -108,9 +110,11 @@ export const resources = {
          newAddProduct: 'Sản phẩm mới thêm',
          AddItemToCart: 'Thêm hàng vào giỏ',
          viewCart: 'xem giỏ hàng',
-         login: 'đăng nhập',
-         register: 'đăng ký',
+         login: 'Đăng nhập',
+         register: 'Đăng ký',
          noProduct: 'chưa có sản phẩm',
+         noAccount: 'Bạn đã có tài khoản',
+         hasAccount: 'Bạn chưa có tài khoản',
 
          //AsideFilter
          'all categories': 'Tất cả danh mục',
@@ -146,7 +150,7 @@ export const resources = {
          like: 'CÓ THỂ BẠN CŨNG THÍCH',
 
          //cart
-         cart: 'giỏ hàng',
+         cart: 'Giỏ hàng',
          product: 'sản phẩm',
          unitPrice: 'đơn giá',
          totalPrice: 'số tiền',

@@ -7,6 +7,7 @@ import Pagination from 'src/components/Pagination/Pagination'
 import { ProductListParams } from 'src/types/product.type'
 import { getCategories } from 'src/apis/category.api'
 import useQueryConfig from 'src/hooks/useQueryConfig'
+import { Helmet } from 'react-helmet'
 
 export type QueryConfig = {
    [key in keyof ProductListParams]: string //giá trị lấy trên url về mặc định là string
@@ -27,9 +28,15 @@ export default function ProductList() {
       queryFn: () => getCategories()
    })
 
-   document.title = 'Trang chủ | Shopee Clone'
    return (
       <div className='bg-gray-200 py-5'>
+         <Helmet>
+            <title>Trang chủ | Shopee Clone</title>
+            <meta
+               name='description'
+               content='Trang chủ của Shopee Clone - Nơi bạn có thể khám phá và mua sắm các sản phẩm phong phú và đa dạng. Tận hưởng trải nghiệm mua sắm trực tuyến tuyệt vời với Shopee Clone.'
+            />
+         </Helmet>
          <div className='container grid grid-cols-12 gap-y-10 md:gap-5'>
             {productsData && categoriesData && (
                <>

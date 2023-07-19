@@ -12,6 +12,7 @@ import { toast } from 'react-toastify'
 import { formatNumber, generateNameId, totalPrice, totalSavings } from 'src/utils/utils'
 import { AppContext } from 'src/contexts/app.context'
 import { useTranslation } from 'react-i18next'
+import { Helmet } from 'react-helmet'
 export default function Cart() {
    const { t } = useTranslation()
    const location = useLocation()
@@ -143,9 +144,17 @@ export default function Cart() {
       buyProductMutation.mutate(result)
    }
 
-   document.title = `${t('cart')} | Shopee Clone`
    return (
       <div className='bg-gray-200 py-16'>
+         <Helmet>
+            <title>{`${t('cart')} | Shopee Clone`}</title>
+            <meta
+               name='description'
+               content={
+                  'Danh sách sản phẩm trong giỏ hàng của bạn trên Shopee Clone. Kiểm tra các mặt hàng đã thêm vào giỏ, điều chỉnh số lượng và tiến hành thanh toán để hoàn tất mua sắm.'
+               }
+            />
+         </Helmet>
          <div className='container'>
             {purchaseInCartData && purchaseInCartData.length > 0 ? (
                <>

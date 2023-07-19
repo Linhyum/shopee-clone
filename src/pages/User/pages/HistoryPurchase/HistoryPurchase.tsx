@@ -9,6 +9,7 @@ import useQueryParams from 'src/hooks/useQueryParams'
 import { PurchaseListStatus } from 'src/types/purchase.type'
 import { formatNumber, generateNameId } from 'src/utils/utils'
 import { useTranslation } from 'react-i18next'
+import { Helmet } from 'react-helmet'
 const purchaseLinks = [
    { text: 'Tất cả', link: purchasesStatus.all },
    { text: 'Chờ xác nhận', link: purchasesStatus.waitForComfirmation },
@@ -32,10 +33,18 @@ export default function HistoryPurchase() {
    useEffect(() => {
       document.body.scrollIntoView({ behavior: 'smooth', block: 'start' })
    }, [status])
-   document.title = `${t('purchase')} | Shopee Clone`
    return (
       <>
          <div className='bg-white sticky top-0 rounded-sm grid grid-cols-12 items-center'>
+            <Helmet>
+               <title>{`${t('purchase')} | Shopee Clone`}</title>
+               <meta
+                  name='description'
+                  content={
+                     'Danh sách các đơn hàng đã đặt trên Shopee Clone. Kiểm tra tình trạng đơn hàng, thông tin vận chuyển, và theo dõi quá trình giao hàng.'
+                  }
+               />
+            </Helmet>
             {purchaseLinks.map((purchaseLink) => (
                <Link
                   key={purchaseLink.link}

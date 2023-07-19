@@ -1,7 +1,8 @@
 import { Link, useMatch } from 'react-router-dom'
 import { path } from 'src/constants/path'
-
+import { useTranslation } from 'react-i18next'
 export default function RegisterHeader() {
+   const { t } = useTranslation()
    const match = useMatch(path.login)
    return (
       <header className='container flex items-center bg-white py-4'>
@@ -25,7 +26,7 @@ export default function RegisterHeader() {
                />
             </svg>
          </Link>
-         <h1 className='ml-5 translate-y-1 text-2xl'>{match ? 'Đăng nhập' : 'Đăng ký'}</h1>
+         <h1 className='ml-5 translate-y-1 text-2xl capitalize'>{match ? t('login') : t('register')}</h1>
       </header>
    )
 }

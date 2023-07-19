@@ -12,8 +12,10 @@ import { isAxiosUnprocessableEntity } from 'src/utils/utils'
 import { ErrorResponse } from 'src/types/utils.type'
 import { AppContext } from 'src/contexts/app.context'
 import { path } from 'src/constants/path'
-
+import { useTranslation } from 'react-i18next'
+import { Helmet } from 'react-helmet'
 export default function Login() {
+   const { t } = useTranslation()
    const { setIsAuthenticated, setProfile } = useContext(AppContext)
    const {
       handleSubmit,
@@ -63,7 +65,6 @@ export default function Login() {
       })
    })
 
-   document.title = 'Đăng nhập | Shopee Clone'
    return (
       <div
          style={{
@@ -71,9 +72,16 @@ export default function Login() {
          }}
          className='h-[600px] w-full bg-cover bg-center bg-no-repeat'
       >
+         <Helmet>
+            <title>{`${t('login')} | Shopee Clone`}</title>
+            <meta
+               name='description'
+               content='Trang Đăng nhập của Shopee Clone. Đăng nhập để truy cập vào tài khoản của bạn và bắt đầu mua sắm trực tuyến với Shopee Clone.'
+            />
+         </Helmet>
          <div className='container flex h-full items-center justify-center md:justify-end'>
             <form onSubmit={onSubmit} className='w-full max-w-[450px] rounded-lg  bg-white p-7 shadow-md'>
-               <h2 className='mb-5 text-xl'>Đăng nhập</h2>
+               <h2 className='mb-5 text-xl'>{t('login')}</h2>
                <div className='flex flex-col gap-y-3'>
                   <Input
                      name='email'
@@ -94,15 +102,15 @@ export default function Login() {
                      type='submit'
                      isLoading={loginMutation.isLoading}
                      disabled={loginMutation.isLoading}
-                     className='w-full rounded-md bg-primary py-3 text-base text-white disabled:opacity-50'
+                     className='w-full rounded-md bg-primary py-3 text-base uppercase text-white disabled:opacity-50'
                   >
-                     ĐĂNG NHẬP
+                     {t('login')}
                   </Button>
                </div>
                <p className='mt-7 text-center text-base text-secondary'>
-                  Bạn chưa có tài khoản?{' '}
+                  {t('noAccount')}?{' '}
                   <Link className='text-primary' to={path.register}>
-                     Đăng ký
+                     {t('register')}
                   </Link>
                </p>
             </form>

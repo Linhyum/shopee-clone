@@ -13,6 +13,8 @@ import { toast } from 'react-toastify'
 import { purchasesStatus } from 'src/constants/purchase'
 import { path } from 'src/constants/path'
 import { useTranslation } from 'react-i18next'
+import { Helmet } from 'react-helmet'
+import { convert } from 'html-to-text'
 
 export default function ProductDetails() {
    const { t } = useTranslation()
@@ -133,16 +135,22 @@ export default function ProductDetails() {
       document.body.scrollIntoView({ behavior: 'smooth', block: 'start' })
    }, [idProduct])
 
-   useEffect(() => {
-      if (product?.name) {
-         document.title = product.name
-      }
-   }, [product?.name])
    return (
       <div className='bg-gray-200 py-6'>
-         <div className='container'>
-            {product && (
-               <>
+         {product && (
+            <>
+               <Helmet>
+                  <title>{product.name}</title>
+                  <meta
+                     name='description'
+                     content={convert(product.description, {
+                        limits: {
+                           maxInputLength: 150
+                        }
+                     })}
+                  />
+               </Helmet>
+               <div className='container'>
                   <div className='grid grid-cols-12 gap-y-5 bg-white p-4 shadow md:gap-x-9'>
                      <div className='col-span-12 md:col-span-5'>
                         <div
@@ -320,9 +328,9 @@ export default function ProductDetails() {
                         ))}
                      </div>
                   )}
-               </>
-            )}
-         </div>
+               </div>
+            </>
+         )}
       </div>
    )
 }

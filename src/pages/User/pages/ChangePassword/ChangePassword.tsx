@@ -10,6 +10,7 @@ import { toast } from 'react-toastify'
 import { isAxiosUnprocessableEntity } from 'src/utils/utils'
 import { ErrorResponse } from 'src/types/utils.type'
 import { useTranslation } from 'react-i18next'
+import { Helmet } from 'react-helmet'
 type FormData = Pick<FormDataUser, 'password' | 'new_password' | 'confirm_password'>
 const changePasswordChema = userSchema.pick(['password', 'new_password', 'confirm_password'])
 export default function ChangePassword() {
@@ -63,9 +64,17 @@ export default function ChangePassword() {
       )
    })
 
-   document.title = `${t('changePassword')} | Shopee Clone`
    return (
       <div className='bg-white rounded shadow-lg p-3 md:p-6'>
+         <Helmet>
+            <title>{`${t('changePassword')} | Shopee Clone`}</title>
+            <meta
+               name='description'
+               content={
+                  'Trang Đổi mật khẩu trên Shopee Clone. Cập nhật mật khẩu mới để bảo mật tài khoản và đảm bảo an toàn cho việc sử dụng dịch vụ trên Shopee Clone.'
+               }
+            />
+         </Helmet>
          <h1 className='capitalize text-lg mb-1'>{t('changePassword')}</h1>
          <p className='text-gray-700'>{t('manage')}</p>
          <Seperate />

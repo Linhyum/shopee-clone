@@ -1,10 +1,14 @@
+import { Helmet } from 'react-helmet'
 import { Link } from 'react-router-dom'
 import { path } from 'src/constants/path'
 
 export default function NotFound() {
-   document.title = 'Not Found | Shopee Clone'
    return (
       <main className='flex h-screen w-full flex-col items-center justify-center'>
+         <Helmet>
+            <title>Not Found | Shopee Clone</title>
+            <meta name='description' content='Not Found | Shopee Clone' />
+         </Helmet>
          <h1 className='text-9xl font-extrabold tracking-widest text-gray-900'>404</h1>
          <div className='absolute rotate-12 rounded bg-primary px-2 text-sm text-white'>Page Not Found</div>
          <button className='mt-5'>

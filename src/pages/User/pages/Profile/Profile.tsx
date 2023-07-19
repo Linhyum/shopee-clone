@@ -17,6 +17,7 @@ import { ErrorResponse } from 'src/types/utils.type'
 import InputFile from 'src/components/InputFile/InputFile'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useTranslation } from 'react-i18next'
+import { Helmet } from 'react-helmet'
 type FormData = Pick<FormDataUser, 'address' | 'avatar' | 'date_of_birth' | 'name' | 'phone'>
 const profileChema = userSchema.pick(['address', 'avatar', 'date_of_birth', 'name', 'phone'])
 
@@ -112,11 +113,17 @@ export default function Profile() {
          }
       }
    })
-   useEffect(() => {
-      document.title = `${profileData?.name as string} | Shopee Clone`
-   }, [profileData?.name])
    return (
       <div className='bg-white rounded shadow-lg p-3 md:p-6'>
+         <Helmet>
+            <title>{`${profileData?.name as string} | Shopee Clone`}</title>
+            <meta
+               name='description'
+               content={
+                  'Trang cá nhân của bạn trên Shopee Clone. Xem và quản lý thông tin cá nhân, đơn hàng, và các hoạt động mua bán trên Shopee Clone.'
+               }
+            />
+         </Helmet>
          <h1 className='capitalize text-lg mb-1'>{t('myProfile')}</h1>
          <p className='text-gray-700'>{t('manage')}</p>
          <Seperate />
