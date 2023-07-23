@@ -36,9 +36,10 @@
 
 ## Công nghệ sử dụng
 
+- Language: TypeScript, ReactJS
 - UI / CSS Library: Tailwindcss
 - State Management: React Query cho async state và React Context cho state thường
-- Form Management: React Hook Form
+- Form Management: React Hook Form, Yup
 - Router: React Router
 - Build tool: Vite
 - Hỗ trợ đa ngôn ngữ với react.i18next
