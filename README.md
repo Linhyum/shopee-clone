@@ -20,14 +20,14 @@
   - Hiển thị thông tin chi tiết
   - Ảnh hiển thị theo slider + hover zoom effect
   - Mô tả thì hiển thị rich text dạng WYSIWYG HTML
-  - Có chức năng mua hàng
+  - Có chức năng mua hàng, thêm vào giỏ hàng
 
 - Giỏ hàng
 
   - Quản lý đơn hàng: Thêm, sửa, xóa sản phẩm
   - Mua hàng
 
-- Quản lý Profile khách hàng
+- Quản lý thông tin khách hàng
 
   - Update thông tin cá nhân
   - Upload Avatar
