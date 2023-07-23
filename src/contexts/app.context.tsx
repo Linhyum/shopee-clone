@@ -12,7 +12,8 @@ interface AppContextInterface {
    reset: () => void
 }
 
-const initialAppContext: AppContextInterface = {
+//dùng cho unit test profile.test.tsx
+export const getInitialAppContext: () => AppContextInterface = () => ({
    isAuthenticated: Boolean(getAccessTokenFromLS()),
    setIsAuthenticated: () => null,
    profile: getProfileFromLS(),
@@ -20,15 +21,23 @@ const initialAppContext: AppContextInterface = {
    extendedPurchases: [],
    setExtendedPurchases: () => null,
    reset: () => null
-}
+})
+
+const initialAppContext = getInitialAppContext()
 
 export const AppContext = createContext<AppContextInterface>(initialAppContext)
 
 //khi không truyền value vào AppProvider thì cái initialAppContext của AppContext sẽ được sử dụng
-export const AppProvider = ({ children }: { children: React.ReactNode }) => {
-   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(initialAppContext.isAuthenticated)
-   const [profile, setProfile] = useState<User | null>(initialAppContext.profile)
-   const [extendedPurchases, setExtendedPurchases] = useState<ExtendedPurchase[]>(initialAppContext.extendedPurchases)
+export const AppProvider = ({
+   children,
+   defaultValue = initialAppContext
+}: {
+   children: React.ReactNode
+   defaultValue?: AppContextInterface //dùng defaultValue để custom value cho unit test(testUtils.tsx)
+}) => {
+   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(defaultValue.isAuthenticated)
+   const [profile, setProfile] = useState<User | null>(defaultValue.profile)
+   const [extendedPurchases, setExtendedPurchases] = useState<ExtendedPurchase[]>(defaultValue.extendedPurchases)
 
    const reset = () => {
       setIsAuthenticated(false)

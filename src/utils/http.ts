@@ -12,7 +12,7 @@ import {
 import { path } from 'src/constants/path'
 import { isAxiosExpiredTokenError, isAxiosUnauthorizedError } from './utils'
 import { ErrorResponse } from 'src/types/utils.type'
-class Http {
+export class Http {
    instance: AxiosInstance
    private accessToken: string
    private refreshToken: string

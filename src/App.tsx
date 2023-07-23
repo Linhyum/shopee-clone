@@ -4,17 +4,11 @@ import { Suspense, lazy, useContext, useEffect } from 'react'
 import { AppContext } from './contexts/app.context'
 import { path } from './constants/path'
 import { LocalStorageEventTarget } from './utils/auth'
-
-// import ProductList from './pages/ProductList/ProductList'
-// import Login from './pages/Login/Login'
-// import Register from './pages/Register/Register'
-// import ProductDetails from './pages/ProductDetails/ProductDetails'
-// import Cart from './pages/Cart/Cart'
-// import Profile from './pages/User/pages/Profile/Profile'
-// import UserLayout from './pages/User/layout/UserLayout/UserLayout'
-// import ChangePassword from './pages/User/pages/ChangePassword/ChangePassword'
-// import HistoryPurchase from './pages/User/pages/HistoryPurchase/HistoryPurchase'
-// import NotFound from './pages/NotFound/NotFound'
+import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary'
+import I18nProvider from './i18n/i18n'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 const NotFound = lazy(() => import('./pages/NotFound/NotFound'))
 const HistoryPurchase = lazy(() => import('./pages/User/pages/HistoryPurchase/HistoryPurchase'))
@@ -49,69 +43,75 @@ export default function App() {
          LocalStorageEventTarget.removeEventListener('clearLS', reset)
       }
    }, [reset])
-
    return (
-      <Suspense fallback={<></>}>
-         <Routes>
-            <Route
-               path={path.home}
-               element={
-                  <MainLayout>
-                     <ProductList />
-                  </MainLayout>
-               }
-            />
-            <Route
-               path={path.productDetails}
-               element={
-                  <MainLayout>
-                     <ProductDetails />
-                  </MainLayout>
-               }
-            />
-            <Route
-               path='*'
-               element={
-                  <MainLayout>
-                     <NotFound />
-                  </MainLayout>
-               }
-            />
-            <Route element={<ProtectedRoute />}>
-               <Route element={<UserLayout />}>
-                  <Route path={path.profile} element={<Profile />} />
-                  <Route path={path.changePassword} element={<ChangePassword />} />
-                  <Route path={path.historyPurchase} element={<HistoryPurchase />} />
-               </Route>
+      <>
+         <ErrorBoundary>
+            <I18nProvider />
+            <Suspense fallback={<></>}>
+               <Routes>
+                  <Route
+                     path={path.home}
+                     element={
+                        <MainLayout>
+                           <ProductList />
+                        </MainLayout>
+                     }
+                  />
+                  <Route
+                     path={path.productDetails}
+                     element={
+                        <MainLayout>
+                           <ProductDetails />
+                        </MainLayout>
+                     }
+                  />
+                  <Route
+                     path='*'
+                     element={
+                        <MainLayout>
+                           <NotFound />
+                        </MainLayout>
+                     }
+                  />
+                  <Route element={<ProtectedRoute />}>
+                     <Route element={<UserLayout />}>
+                        <Route path={path.profile} element={<Profile />} />
+                        <Route path={path.changePassword} element={<ChangePassword />} />
+                        <Route path={path.historyPurchase} element={<HistoryPurchase />} />
+                     </Route>
 
-               <Route
-                  path={path.cart}
-                  element={
-                     <MainLayout isCart>
-                        <Cart />
-                     </MainLayout>
-                  }
-               />
-            </Route>
-            <Route element={<RejectedRoute />}>
-               <Route
-                  path={path.login}
-                  element={
-                     <MainLayout isRegister>
-                        <Login />
-                     </MainLayout>
-                  }
-               />
-               <Route
-                  path={path.register}
-                  element={
-                     <MainLayout isRegister>
-                        <Register />
-                     </MainLayout>
-                  }
-               />
-            </Route>
-         </Routes>
-      </Suspense>
+                     <Route
+                        path={path.cart}
+                        element={
+                           <MainLayout isCart>
+                              <Cart />
+                           </MainLayout>
+                        }
+                     />
+                  </Route>
+                  <Route element={<RejectedRoute />}>
+                     <Route
+                        path={path.login}
+                        element={
+                           <MainLayout isRegister>
+                              <Login />
+                           </MainLayout>
+                        }
+                     />
+                     <Route
+                        path={path.register}
+                        element={
+                           <MainLayout isRegister>
+                              <Register />
+                           </MainLayout>
+                        }
+                     />
+                  </Route>
+               </Routes>
+            </Suspense>
+         </ErrorBoundary>
+         <ReactQueryDevtools initialIsOpen={false} />
+         <ToastContainer autoClose={2000} />
+      </>
    )
 }

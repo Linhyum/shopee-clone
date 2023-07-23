@@ -113,8 +113,8 @@ export const resources = {
          login: 'Đăng nhập',
          register: 'Đăng ký',
          noProduct: 'chưa có sản phẩm',
-         noAccount: 'Bạn đã có tài khoản',
-         hasAccount: 'Bạn chưa có tài khoản',
+         noAccount: 'Bạn chưa có tài khoản',
+         hasAccount: 'Bạn đã có tài khoản',
 
          //AsideFilter
          'all categories': 'Tất cả danh mục',

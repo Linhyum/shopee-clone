@@ -26,7 +26,10 @@ export default function ProductDetails() {
    const idProduct = getIdFromNameId(id as string)
    const { data } = useQuery({
       queryKey: ['product', idProduct],
-      queryFn: () => productApi.getProductDetail(idProduct as string),
+      queryFn: () => {
+         document.body.scrollIntoView({ behavior: 'smooth', block: 'start' })
+         return productApi.getProductDetail(idProduct as string)
+      },
       keepPreviousData: true // giữ lại data trước để mỗi lần fetch lại không bị giật trang web
    })
    const product = data?.data.data
@@ -131,9 +134,9 @@ export default function ProductDetails() {
       // )
    }
 
-   useEffect(() => {
-      document.body.scrollIntoView({ behavior: 'smooth', block: 'start' })
-   }, [idProduct])
+   // useEffect(() => {
+   //    document.body.scrollIntoView({ behavior: 'smooth', block: 'start' })
+   // }, [idProduct])
 
    return (
       <div className='bg-gray-200 py-6'>
@@ -145,7 +148,7 @@ export default function ProductDetails() {
                      name='description'
                      content={convert(product.description, {
                         limits: {
-                           maxInputLength: 150
+                           maxDepth: 150
                         }
                      })}
                   />

@@ -28,7 +28,7 @@ export default function Login() {
    })
 
    const loginMutation = useMutation({
-      mutationFn: (body: FormDataLogin) => authApi.login(body)
+      mutationFn: authApi.login
    })
    const onSubmit = handleSubmit((data) => {
       //data này là từ cái form nhập vào(email, password)
@@ -54,12 +54,6 @@ export default function Login() {
                      }
                   })
                }
-               // if (formError?.email) {
-               //    setError('email', { message: formError.email, type: 'Server' })
-               // }
-               // if (formError?.password) {
-               //    setError('password', { message: formError.password, type: 'Server' })
-               // }
             }
          }
       })
