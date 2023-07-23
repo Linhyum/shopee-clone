@@ -107,7 +107,7 @@ export default function HistoryPurchase() {
                                        </span>
                                     </div>
                                     <div>
-                                       <span>{t('totalPrice')}</span>
+                                       <span className='capitalize'>{t('totalPrice')}</span>
                                        <span className='text-lg ml-3 text-primary'>
                                           ₫{formatNumber(purchase.price * purchase.buy_count)}
                                        </span>
