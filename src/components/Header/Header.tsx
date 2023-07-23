@@ -137,8 +137,7 @@ export default function Header({ isCart }: { isCart?: boolean }) {
                      <img
                         className='h-6 w-6 rounded-full object-cover'
                         src={
-                           `https://api-ecom.duthanhduoc.com/images/${profile?.avatar}` ||
-                           'https://bsnl.ch/wp-content/uploads/2019/03/avatar-default-circle.png'
+                           profile?.avatar ? `https://api-ecom.duthanhduoc.com/images/${profile.avatar}` : '/avatar.png'
                         }
                         alt='avartar'
                      />

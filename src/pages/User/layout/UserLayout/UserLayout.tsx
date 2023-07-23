@@ -33,8 +33,9 @@ function UserSideNav() {
             <Link to={path.profile}>
                <img
                   src={
-                     `https://api-ecom.duthanhduoc.com/images/${profileData?.avatar}` ||
-                     'https://bsnl.ch/wp-content/uploads/2019/03/avatar-default-circle.png'
+                     profileData?.avatar
+                        ? `https://api-ecom.duthanhduoc.com/images/${profileData.avatar}`
+                        : '/avatar.png'
                   }
                   alt='avatar'
                   className='w-12 h-12 object-cover rounded-full'

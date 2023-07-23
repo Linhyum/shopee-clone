@@ -116,7 +116,7 @@ export default function Profile() {
    return (
       <div className='bg-white rounded shadow-lg p-3 md:p-6'>
          <Helmet>
-            <title>{`${profileData?.name as string} | Shopee Clone`}</title>
+            <title>{`${profileData?.name || profileData?.email} | Shopee Clone`}</title>
             <meta
                name='description'
                content={
@@ -214,8 +214,9 @@ export default function Profile() {
                   <img
                      src={
                         previewImage ||
-                        `https://api-ecom.duthanhduoc.com/images/${profileData?.avatar}` ||
-                        'https://bsnl.ch/wp-content/uploads/2019/03/avatar-default-circle.png'
+                        (profileData?.avatar
+                           ? `https://api-ecom.duthanhduoc.com/images/${profileData.avatar}`
+                           : '/avatar.png')
                      }
                      alt='avatar'
                      className='w-28 h-28 rounded-full object-cover'
