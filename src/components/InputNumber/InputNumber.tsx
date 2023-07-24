@@ -13,7 +13,7 @@ export const InputNumber = forwardRef<HTMLInputElement, InputNumberProps>(functi
       }`,
       classNameError = 'min-h-[20px] text-red-500 text-sm',
       onChange,
-      value = '', //dù cho value có thay đổi thì cũng sẽ k cập nhật lại localValue
+      value, //dù cho value có thay đổi thì cũng sẽ k cập nhật lại localValue
       ...rest
    },
    ref
@@ -28,7 +28,13 @@ export const InputNumber = forwardRef<HTMLInputElement, InputNumberProps>(functi
    }
    return (
       <div className={className}>
-         <input {...rest} className={classNameInput} value={value || localValue} onChange={handleChange} ref={ref} />
+         <input
+            {...rest}
+            className={classNameInput}
+            value={value === undefined ? localValue : value}
+            onChange={handleChange}
+            ref={ref}
+         />
          <span className={classNameError}>{errorMessage}</span>
       </div>
    )
