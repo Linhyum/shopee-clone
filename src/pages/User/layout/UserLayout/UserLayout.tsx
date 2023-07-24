@@ -1,26 +1,23 @@
 import { Link, NavLink, Outlet } from 'react-router-dom'
 import { path } from 'src/constants/path'
-import MainLayout from 'src/layouts/MainLayout/MainLayout'
 import classNames from 'classnames'
 import { useTranslation } from 'react-i18next'
 
 import useQueryProfile from 'src/hooks/useQueryProfile'
 export default function UserLayout() {
    return (
-      <MainLayout>
-         <div className='bg-gray-200 py-14'>
-            <div className='container'>
-               <div className='grid grid-cols-12 gap-x-3 gap-y-8'>
-                  <div className='col-span-12 md:col-span-2'>
-                     <UserSideNav />
-                  </div>
-                  <div className='col-span-12 md:col-span-10'>
-                     <Outlet />
-                  </div>
+      <div className='bg-gray-200 py-14'>
+         <div className='container'>
+            <div className='grid grid-cols-12 gap-x-3 gap-y-8'>
+               <div className='col-span-12 md:col-span-2'>
+                  <UserSideNav />
+               </div>
+               <div className='col-span-12 md:col-span-10'>
+                  <Outlet />
                </div>
             </div>
          </div>
-      </MainLayout>
+      </div>
    )
 }
 

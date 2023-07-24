@@ -49,63 +49,31 @@ export default function App() {
             <I18nProvider />
             <Suspense fallback={<></>}>
                <Routes>
-                  <Route
-                     path={path.home}
-                     element={
-                        <MainLayout>
-                           <ProductList />
-                        </MainLayout>
-                     }
-                  />
-                  <Route
-                     path={path.productDetails}
-                     element={
-                        <MainLayout>
-                           <ProductDetails />
-                        </MainLayout>
-                     }
-                  />
-                  <Route
-                     path='*'
-                     element={
-                        <MainLayout>
-                           <NotFound />
-                        </MainLayout>
-                     }
-                  />
+                  <Route element={<MainLayout />}>
+                     <Route path={path.home} element={<ProductList />} />
+                     <Route path={path.productDetails} element={<ProductDetails />} />
+                     <Route path='*' element={<NotFound />} />
+                  </Route>
+
                   <Route element={<ProtectedRoute />}>
-                     <Route element={<UserLayout />}>
-                        <Route path={path.profile} element={<Profile />} />
-                        <Route path={path.changePassword} element={<ChangePassword />} />
-                        <Route path={path.historyPurchase} element={<HistoryPurchase />} />
+                     <Route element={<MainLayout />}>
+                        <Route element={<UserLayout />}>
+                           <Route path={path.profile} element={<Profile />} />
+                           <Route path={path.changePassword} element={<ChangePassword />} />
+                           <Route path={path.historyPurchase} element={<HistoryPurchase />} />
+                        </Route>
                      </Route>
 
-                     <Route
-                        path={path.cart}
-                        element={
-                           <MainLayout isCart>
-                              <Cart />
-                           </MainLayout>
-                        }
-                     />
+                     <Route element={<MainLayout isCart />}>
+                        <Route path={path.cart} element={<Cart />} />
+                     </Route>
                   </Route>
+
                   <Route element={<RejectedRoute />}>
-                     <Route
-                        path={path.login}
-                        element={
-                           <MainLayout isRegister>
-                              <Login />
-                           </MainLayout>
-                        }
-                     />
-                     <Route
-                        path={path.register}
-                        element={
-                           <MainLayout isRegister>
-                              <Register />
-                           </MainLayout>
-                        }
-                     />
+                     <Route element={<MainLayout isRegister />}>
+                        <Route path={path.login} element={<Login />} />
+                        <Route path={path.register} element={<Register />} />
+                     </Route>
                   </Route>
                </Routes>
             </Suspense>
