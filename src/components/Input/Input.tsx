@@ -1,16 +1,16 @@
 import { InputHTMLAttributes, useState } from 'react'
-import { UseFormRegister } from 'react-hook-form'
+import { FieldPath, FieldValues, UseFormRegister } from 'react-hook-form'
 import TogglePassword from '../TogglePassword/TogglePassword'
-interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+interface InputProps<TFieldValues extends FieldValues> extends InputHTMLAttributes<HTMLInputElement> {
    errorMessage?: string
-   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-   register?: UseFormRegister<any>
+   register?: UseFormRegister<TFieldValues>
+   name?: FieldPath<TFieldValues>
    className?: string
    classNameInput?: string
    classNameError?: string
    hasIcon?: boolean
 }
-export default function Input({
+export default function Input<TFieldValues extends FieldValues = FieldValues>({
    errorMessage,
    name,
    register,
@@ -20,7 +20,7 @@ export default function Input({
    hasIcon,
    type = 'text',
    ...rest
-}: InputProps) {
+}: InputProps<TFieldValues>) {
    const registerResult = register && name ? register(name) : null
    const [openEye, setOpenEye] = useState<boolean>(false)
    return (
