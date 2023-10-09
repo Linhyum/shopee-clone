@@ -113,6 +113,8 @@ export default function Profile() {
          }
       }
    })
+   console.log(previewImage)
+
    return (
       <div className='bg-white rounded shadow-lg p-3 md:p-6'>
          <Helmet>

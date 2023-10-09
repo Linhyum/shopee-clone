@@ -32,6 +32,7 @@ export default function ProductDetails() {
       },
       keepPreviousData: true // giữ lại data trước để mỗi lần fetch lại không bị giật trang web
    })
+
    const product = data?.data.data
 
    const imageRef = useRef<HTMLImageElement>(null)
