@@ -234,7 +234,7 @@ export default function ProductDetails() {
                            <div className='mx-4 h-4 w-[1px] bg-gray-300' />
                            <div className='flex items-center gap-x-1'>
                               <span>{formatNumberWithK(product.sold)}</span>
-                              <span className='text-secondary dark:text-slate-400 dark:text-white'>{t('sold')}</span>
+                              <span className='text-secondary dark:text-white'>{t('sold')}</span>
                            </div>
                         </div>
                         <div className='flex w-full flex-col items-center gap-x-3 bg-gray-50 dark:bg-slate-700 p-5 md:flex-row'>
