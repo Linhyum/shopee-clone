@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next'
 import useQueryProfile from 'src/hooks/useQueryProfile'
 export default function UserLayout() {
    return (
-      <div className='bg-gray-200 py-14'>
+      <div className='bg-gray-200 dark:bg-slate-900 dark:text-white py-14'>
          <div className='container'>
             <div className='grid grid-cols-12 gap-x-3 gap-y-8'>
                <div className='col-span-12 md:col-span-2'>
@@ -39,7 +39,9 @@ function UserSideNav() {
                />
             </Link>
             <div>
-               <span className='font-semibold text-gray-600 break-all'>{profileData?.name || profileData?.email}</span>
+               <span className='font-semibold text-gray-600 dark:text-white break-all'>
+                  {profileData?.name || profileData?.email}
+               </span>
                <Link to={path.profile} className='flex items-center gap-x-1 mt-1'>
                   <svg width={12} height={12} viewBox='0 0 12 12' xmlns='http://www.w3.org/2000/svg'>
                      <path
@@ -48,12 +50,12 @@ function UserSideNav() {
                         fillRule='evenodd'
                      />
                   </svg>
-                  <span className='text-secondary capitalize'>{t('editProfile')}</span>
+                  <span className='text-secondary dark:text-slate-400 capitalize'>{t('editProfile')}</span>
                </Link>
             </div>
          </div>
          <div className='border-t-[1px] border-t-gray-300 my-5' />
-         <div className='flex flex-col gap-y-4 pt-2 text-gray-600'>
+         <div className='flex flex-col gap-y-4 pt-2 text-gray-600 dark:text-white'>
             <NavLink
                to={path.profile}
                className={({ isActive }) =>

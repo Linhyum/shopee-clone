@@ -16,7 +16,10 @@ export default function Pagination({ queryConfig, pageSize }: Props) {
          if (!dotBefore) {
             dotBefore = true
             return (
-               <span key={index} className='flex h-9 w-9 items-center justify-center rounded bg-white shadow-sm'>
+               <span
+                  key={index}
+                  className='flex h-9 w-9 items-center justify-center rounded bg-white dark:bg-slate-600 shadow-sm'
+               >
                   ...
                </span>
             )
@@ -27,7 +30,10 @@ export default function Pagination({ queryConfig, pageSize }: Props) {
          if (!dotAfter) {
             dotAfter = true
             return (
-               <span key={index} className='flex h-9 w-9 items-center justify-center rounded bg-white shadow-sm'>
+               <span
+                  key={index}
+                  className='flex h-9 w-9 items-center justify-center rounded bg-white dark:bg-slate-600 shadow-sm'
+               >
                   ...
                </span>
             )
@@ -60,7 +66,7 @@ export default function Pagination({ queryConfig, pageSize }: Props) {
                      search: createSearchParams({ ...queryConfig, page: pageNumber.toString() }).toString() //createSearchParams giúp chuyển {page:1,limit:20} thành page=1&limit=20
                   }}
                   key={index}
-                  className={`flex h-9 w-9 items-center justify-center rounded bg-white shadow-sm ${
+                  className={`flex h-9 w-9 items-center justify-center rounded bg-white dark:bg-slate-700 shadow-sm ${
                      page === pageNumber && 'border border-cyan-500'
                   }`}
                >
@@ -72,28 +78,32 @@ export default function Pagination({ queryConfig, pageSize }: Props) {
    return (
       <div className='mt-5 flex flex-wrap justify-center gap-4 text-base'>
          {page === 1 ? (
-            <span className={`cursor-not-allowed rounded bg-white/60 px-3 py-[6px] shadow-sm`}>Prev</span>
+            <span className={`cursor-not-allowed rounded bg-white/60 dark:bg-slate-600 px-3 py-[6px] shadow-sm`}>
+               Prev
+            </span>
          ) : (
             <Link
                to={{
                   pathname: path.home,
                   search: createSearchParams({ ...queryConfig, page: (page - 1).toString() }).toString()
                }}
-               className={`rounded bg-white px-3 py-[6px] shadow-sm`}
+               className={`rounded bg-white dark:bg-slate-700 px-3 py-[6px] shadow-sm`}
             >
                Prev
             </Link>
          )}
          {renderPagination()}
          {page === pageSize ? (
-            <span className='cursor-not-allowed rounded bg-white/60 px-3 py-[6px] shadow-sm'>Next</span>
+            <span className='cursor-not-allowed rounded bg-white/60 dark:bg-slate-600 px-3 py-[6px] shadow-sm'>
+               Next
+            </span>
          ) : (
             <Link
                to={{
                   pathname: path.home,
                   search: createSearchParams({ ...queryConfig, page: (page + 1).toString() }).toString()
                }}
-               className='rounded bg-white px-3 py-[6px] shadow-sm'
+               className='rounded bg-white dark:bg-slate-700 px-3 py-[6px] shadow-sm'
             >
                Next
             </Link>

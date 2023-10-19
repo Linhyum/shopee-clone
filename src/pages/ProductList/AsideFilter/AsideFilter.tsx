@@ -133,7 +133,7 @@ export default function AsideFilter({ queryConfig, categoriesData }: Props) {
                      <InputNumber
                         className='flex-1'
                         placeholder={`₫ ${t('from')}`}
-                        classNameInput='h-[30px] w-full rounded-sm border border-gray-300 p-1 outline-none focus:border-gray-500 focus:shadow-sm'
+                        classNameInput='h-[30px] w-full rounded-sm border border-gray-300 p-1 outline-none focus:border-gray-500 dark:bg-slate-800 focus:shadow-sm'
                         {...field}
                         onChange={(e) => {
                            field.onChange(e)
@@ -151,7 +151,7 @@ export default function AsideFilter({ queryConfig, categoriesData }: Props) {
                      <InputNumber
                         className='flex-1'
                         placeholder={`₫ ${t('to')}`}
-                        classNameInput='h-[30px] w-full rounded-sm border border-gray-300 p-1 outline-none focus:border-gray-500 focus:shadow-sm'
+                        classNameInput='h-[30px] w-full rounded-sm border dark:bg-slate-800 border-gray-300 p-1 outline-none focus:border-gray-500 focus:shadow-sm'
                         {...field}
                         onChange={(e) => {
                            field.onChange(e)

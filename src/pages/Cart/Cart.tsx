@@ -12,6 +12,7 @@ import { toast } from 'react-toastify'
 import { formatNumber, generateNameId, totalPrice, totalSavings } from 'src/utils/utils'
 import { AppContext } from 'src/contexts/app.context'
 import { useTranslation } from 'react-i18next'
+import Swal from 'sweetalert2'
 import { Helmet } from 'react-helmet'
 export default function Cart() {
    const { t } = useTranslation()
@@ -132,8 +133,21 @@ export default function Cart() {
    }
 
    const handleDetelePurchases = () => {
-      const result = extendedPurchasesChecked.map((purchase) => purchase._id)
-      deletePurchaseMutation.mutate(result)
+      Swal.fire({
+         title: `Bạn muốn xoá tất cả sản phẩm?`,
+         text: 'Bạn sẽ không thể hoàn tác hành động này!',
+         icon: 'warning',
+         showCancelButton: true,
+         confirmButtonColor: '#3085d6',
+         cancelButtonColor: '#d33',
+         confirmButtonText: 'Xoá tất cả'
+      }).then(async (result) => {
+         if (result.isConfirmed) {
+            const result = extendedPurchasesChecked.map((purchase) => purchase._id)
+            deletePurchaseMutation.mutate(result)
+            Swal.fire({ text: 'Xoá sản phẩm thành công!', icon: 'success' })
+         }
+      })
    }
 
    const handleBuyProduct = () => {
@@ -145,7 +159,7 @@ export default function Cart() {
    }
 
    return (
-      <div className='bg-gray-200 py-16'>
+      <div className='bg-gray-200 dark:bg-slate-900 dark:text-white py-16'>
          <Helmet>
             <title>{`${t('cart')} | Shopee Clone`}</title>
             <meta
@@ -160,7 +174,7 @@ export default function Cart() {
                <>
                   <div className='overflow-auto'>
                      <div className='min-w-[1200px]'>
-                        <div className='grid grid-cols-12 rounded-sm bg-white py-5 px-9 capitalize text-secondary shadow'>
+                        <div className='grid grid-cols-12 rounded-sm bg-white dark:bg-slate-800 py-5 px-9 capitalize text-secondary dark:text-white shadow'>
                            <div className='col-span-6'>
                               <div className='flex items-center'>
                                  <div className='flex flex-shrink-0 items-center justify-center pr-3'>
@@ -184,11 +198,11 @@ export default function Cart() {
                            </div>
                         </div>
 
-                        <div className='my-3 rounded-sm bg-white p-5 shadow flex flex-col gap-y-5'>
+                        <div className='my-3 rounded-sm bg-white dark:bg-slate-800 p-5 shadow flex flex-col gap-y-5'>
                            {extendedPurchases?.map((purchase, index) => (
                               <div
                                  key={purchase._id}
-                                 className='grid grid-cols-12 items-center rounded-sm border border-gray-200 py-5 px-4 text-center text-secondary'
+                                 className='grid grid-cols-12 items-center rounded-sm border border-gray-200 py-5 px-4 text-center dark:text-white text-secondary'
                               >
                                  <div className='col-span-6 flex'>
                                     <div className='flex flex-shrink-0 items-center justify-center pr-3'>
@@ -255,7 +269,7 @@ export default function Cart() {
                      </div>
                   </div>
 
-                  <div className='sticky bottom-0 border border-gray-100 z-10 mt-8 flex flex-col rounded-sm bg-white p-5 shadow md:flex-row md:items-center'>
+                  <div className='sticky bottom-0 border border-gray-100 z-10 mt-8 flex flex-col rounded-sm bg-white dark:bg-slate-800 p-5 shadow md:flex-row md:items-center'>
                      <div className='flex gap-x-5 items-center text-base'>
                         <div className='flex flex-shrink-0 items-center justify-center'>
                            <input
@@ -284,7 +298,7 @@ export default function Cart() {
                               </div>
                            </div>
                            <div className='flex items-center text-sm gap-x-5 sm:justify-end'>
-                              <div className='text-secondary'>{t('saved')}:</div>
+                              <div className='text-secondary dark:text-white'>{t('saved')}:</div>
                               <div className='text-primary'>
                                  ₫{formatNumber(totalSavings(extendedPurchasesChecked))}
                               </div>

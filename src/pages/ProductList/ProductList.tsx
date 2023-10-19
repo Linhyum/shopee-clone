@@ -8,6 +8,7 @@ import { ProductListParams } from 'src/types/product.type'
 import { getCategories } from 'src/apis/category.api'
 import useQueryConfig from 'src/hooks/useQueryConfig'
 import { Helmet } from 'react-helmet'
+import Loading from 'src/components/Loading/Loading'
 
 export type QueryConfig = {
    [key in keyof ProductListParams]: string //giá trị lấy trên url về mặc định là string
@@ -29,7 +30,7 @@ export default function ProductList() {
    })
 
    return (
-      <div className='bg-gray-200 py-5'>
+      <div className='bg-gray-200 dark:bg-slate-900 dark:text-white py-5'>
          <Helmet>
             <title>Trang chủ | Shopee Clone</title>
             <meta
@@ -38,7 +39,7 @@ export default function ProductList() {
             />
          </Helmet>
          <div className='container grid grid-cols-12 gap-y-10 md:gap-5'>
-            {productsData && categoriesData && (
+            {productsData && categoriesData ? (
                <>
                   <div className='col-span-12 text-base md:col-span-3'>
                      <AsideFilter queryConfig={queryConfig} categoriesData={categoriesData.data.data} />
@@ -57,6 +58,8 @@ export default function ProductList() {
                      <Pagination queryConfig={queryConfig} pageSize={productsData.data.data.pagination.page_size} />
                   </div>
                </>
+            ) : (
+               <Loading />
             )}
          </div>
       </div>

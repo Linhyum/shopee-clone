@@ -64,7 +64,7 @@ export default function QuantityController({
          <button
             disabled={disabledButtons}
             onClick={decrease}
-            className='flex h-8 w-8 items-center justify-center rounded-l-sm border border-gray-300 text-gray-600 disabled:bg-gray-50'
+            className='flex h-8 w-8 items-center justify-center rounded-l-sm border border-gray-300 text-gray-600 dark:text-white disabled:bg-gray-50'
          >
             <svg
                xmlns='http://www.w3.org/2000/svg'
@@ -80,7 +80,7 @@ export default function QuantityController({
 
          <InputNumber
             className=''
-            classNameInput='h-8 w-14 border-b border-t border-gray-300 p-1 text-center outline-none text-sm'
+            classNameInput='h-8 w-14 border-b border-t border-gray-300 dark:bg-slate-800 dark:text-white p-1 text-center outline-none text-sm'
             classNameError='hidden'
             onChange={handleChange}
             value={value || localValue}
@@ -91,7 +91,7 @@ export default function QuantityController({
          <button
             disabled={disabledButtons}
             onClick={increase}
-            className='flex h-8 w-8 items-center justify-center rounded-r-sm border border-gray-300 text-gray-600 disabled:bg-gray-50'
+            className='flex h-8 w-8 items-center justify-center rounded-r-sm border border-gray-300 text-gray-600 dark:text-white disabled:bg-gray-50'
          >
             <svg
                xmlns='http://www.w3.org/2000/svg'

@@ -65,7 +65,7 @@ export default function ChangePassword() {
    })
 
    return (
-      <div className='bg-white rounded shadow-lg p-3 md:p-6'>
+      <div className='bg-white dark:bg-slate-800 rounded shadow-lg p-3 md:p-6'>
          <Helmet>
             <title>{`${t('changePassword')} | Shopee Clone`}</title>
             <meta
@@ -76,12 +76,12 @@ export default function ChangePassword() {
             />
          </Helmet>
          <h1 className='capitalize text-lg mb-1'>{t('changePassword')}</h1>
-         <p className='text-gray-700'>{t('manage')}</p>
+         <p className='text-gray-700 dark:text-slate-400'>{t('manage')}</p>
          <Seperate />
          <form onSubmit={onSubmit} className='pt-6'>
             <div className='flex flex-col gap-y-2 w-full md:w-[80%] lg:w-[70%]'>
                <div className='flex flex-col sm:flex-row items-center gap-y-1 gap-x-5'>
-                  <div className='w-full sm:w-[20%] sm:text-right text-gray-700 capitalize sm:-translate-y-3'>
+                  <div className='w-full sm:w-[20%] sm:text-right text-gray-700 dark:text-slate-400 capitalize sm:-translate-y-3'>
                      {t('oldPassword')}:
                   </div>
                   <Input
@@ -90,13 +90,13 @@ export default function ChangePassword() {
                      hasIcon
                      className=' w-full sm:w-[80%] flex flex-col gap-y-1'
                      placeholder={t('oldPassword')}
-                     classNameInput='w-full h-10 border px-3 border-gray-300 focus:border-blue-500 outline-none rounded'
+                     classNameInput='w-full h-10 border px-3 border-gray-300 dark:bg-slate-700 focus:border-blue-500 outline-none rounded'
                      register={register}
                      errorMessage={errors.password?.message}
                   />
                </div>
                <div className='flex flex-col sm:flex-row items-center gap-y-1 gap-x-5'>
-                  <div className='w-full sm:w-[20%] sm:text-right text-gray-700 capitalize sm:-translate-y-3'>
+                  <div className='w-full sm:w-[20%] sm:text-right text-gray-700 dark:text-slate-400 capitalize sm:-translate-y-3'>
                      {t('newPassword')}:
                   </div>
                   <Input
@@ -105,14 +105,14 @@ export default function ChangePassword() {
                      hasIcon
                      className='w-full sm:w-[80%] flex flex-col gap-y-1'
                      placeholder={t('newPassword')}
-                     classNameInput='w-full h-10 border px-3 border-gray-300 focus:border-blue-500 outline-none rounded'
+                     classNameInput='w-full h-10 border px-3 border-gray-300 dark:bg-slate-700 focus:border-blue-500 outline-none rounded'
                      register={register}
                      errorMessage={errors.new_password?.message}
                   />
                </div>
 
                <div className='flex flex-col sm:flex-row items-center gap-y-1 gap-x-5'>
-                  <div className='w-full sm:w-[20%] sm:text-right text-gray-700 capitalize sm:-translate-y-3'>
+                  <div className='w-full sm:w-[20%] sm:text-right text-gray-700 dark:text-slate-400 capitalize sm:-translate-y-3'>
                      {t('confirmPassword')}:
                   </div>
                   <Input
@@ -121,7 +121,7 @@ export default function ChangePassword() {
                      hasIcon
                      className='w-full sm:w-[80%] flex flex-col gap-y-1'
                      placeholder={t('confirmPassword')}
-                     classNameInput='w-full h-10 border px-3 border-gray-300 focus:border-blue-500 outline-none rounded'
+                     classNameInput='w-full h-10 border px-3 border-gray-300 dark:bg-slate-700 focus:border-blue-500 outline-none rounded'
                      register={register}
                      errorMessage={errors.confirm_password?.message}
                   />

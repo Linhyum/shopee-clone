@@ -35,7 +35,7 @@ export default function HistoryPurchase() {
    }, [status])
    return (
       <>
-         <div className='bg-white sticky top-0 rounded-sm grid grid-cols-12 items-center'>
+         <div className='bg-white dark:bg-slate-800 sticky top-0 rounded-sm grid grid-cols-12 items-center'>
             <Helmet>
                <title>{`${t('purchase')} | Shopee Clone`}</title>
                <meta
@@ -84,7 +84,7 @@ export default function HistoryPurchase() {
                                     id: purchase.product._id
                                  })}`}
                                  key={purchase._id}
-                                 className='p-5 gap-x-3 flex items-start h-36 bg-white shadow rounded-sm'
+                                 className='p-5 gap-x-3 flex items-start h-36 bg-white dark:bg-slate-800 shadow rounded-sm'
                               >
                                  <img
                                     src={purchase.product.image}
@@ -99,7 +99,7 @@ export default function HistoryPurchase() {
                                  </div>
                                  <div className='ml-auto flex flex-col h-full justify-between items-end'>
                                     <div>
-                                       <span className='text-secondary line-through'>
+                                       <span className='text-secondary dark:text-slate-400 line-through'>
                                           ₫{formatNumber(purchase.product.price_before_discount)}
                                        </span>
                                        <span className='text-primary ml-2'>
@@ -120,7 +120,7 @@ export default function HistoryPurchase() {
                   </div>
                </div>
                {purchaseData?.length === 0 && (
-                  <div className='bg-white mt-4 h-[600px] rounded-sm shadow flex flex-col gap-y-5 items-center justify-center'>
+                  <div className='bg-white dark:bg-slate-800 mt-4 h-[600px] rounded-sm shadow flex flex-col gap-y-5 items-center justify-center'>
                      <img
                         src='https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/5fafbb923393b712b96488590b8f781f.png'
                         alt='no-purchase'

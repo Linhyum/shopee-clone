@@ -1,6 +1,6 @@
 import { Link, createSearchParams, useNavigate } from 'react-router-dom'
 import Popover from '../Popover/Popover'
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import { AppContext } from 'src/contexts/app.context'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { authApi } from 'src/apis/auth.api'
@@ -12,8 +12,10 @@ import { getPurchases } from 'src/apis/purchase.api'
 import { purchasesStatus } from 'src/constants/purchase'
 import { formatNumber, generateNameId } from 'src/utils/utils'
 import { useTranslation } from 'react-i18next'
+import Swal from 'sweetalert2'
 import useLocalStorage from 'src/hooks/useLocalStorage'
 export default function Header({ isCart }: { isCart?: boolean }) {
+   const [darkMode, setDarkMode] = useLocalStorage<boolean>('darkmodeShopee', false)
    const [, setValue] = useLocalStorage<string>('language', 'vi')
    const { i18n, t } = useTranslation()
    const { profile } = useContext(AppContext)
@@ -36,7 +38,20 @@ export default function Header({ isCart }: { isCart?: boolean }) {
       }
    })
    const handleLogout = () => {
-      logoutMutation.mutate()
+      Swal.fire({
+         title: 'Bạn muốn đăng xuất?',
+         text: 'Bạn sẽ không thể hoàn tác hành động này!',
+         icon: 'warning',
+         showCancelButton: true,
+         confirmButtonColor: '#3085d6',
+         cancelButtonColor: '#d33',
+         confirmButtonText: 'Đăng xuất'
+      }).then(async (result) => {
+         if (result.isConfirmed) {
+            logoutMutation.mutate()
+            Swal.fire({ text: 'Đăng xuất thành công!', icon: 'success' })
+         }
+      })
    }
 
    const handleSearch = handleSubmit((data) => {
@@ -61,6 +76,15 @@ export default function Header({ isCart }: { isCart?: boolean }) {
       setValue(lng)
    }
 
+   //dark mode
+   useEffect(() => {
+      if (darkMode) {
+         document.documentElement.classList.add('dark')
+      } else {
+         document.documentElement.classList.remove('dark')
+      }
+   }, [darkMode])
+
    return (
       <header
          style={{
@@ -69,9 +93,51 @@ export default function Header({ isCart }: { isCart?: boolean }) {
       >
          <div className={`container ${isCart ? 'py-1' : 'pb-5 pt-3'} md:text-base`}>
             <div className='flex items-center justify-end gap-x-6 text-white'>
+               <button onClick={() => setDarkMode((prev) => !prev)}>
+                  {darkMode ? (
+                     <svg
+                        stroke='currentColor'
+                        fill='url(#grad1)'
+                        strokeWidth={0}
+                        viewBox='0 0 512 512'
+                        height='23px'
+                        width='23px'
+                        xmlns='http://www.w3.org/2000/svg'
+                        className='sc-eghvBh cRwqIL animate-fade-in'
+                     >
+                        <defs>
+                           <linearGradient id='grad1' x1='0%' y1='0%' x2='100%' y2='0%'>
+                              <stop offset='0%' style={{ stopColor: 'rgb(7, 234, 241)', stopOpacity: 1 }} />
+                              <stop offset='100%' style={{ stopColor: 'rgb(4, 9, 239)', stopOpacity: 1 }} />
+                           </linearGradient>
+                        </defs>
+                        <path d='M283.211 512c78.962 0 151.079-35.925 198.857-94.792 7.068-8.708-.639-21.43-11.562-19.35-124.203 23.654-238.262-71.576-238.262-196.954 0-72.222 38.662-138.635 101.498-174.394 9.686-5.512 7.25-20.197-3.756-22.23A258.156 258.156 0 0 0 283.211 0c-141.309 0-256 114.511-256 256 0 141.309 114.511 256 256 256z' />
+                     </svg>
+                  ) : (
+                     <svg
+                        stroke='currentColor'
+                        fill='url(#grad1)'
+                        strokeWidth={0}
+                        viewBox='0 0 512 512'
+                        data-tw='text-2xl'
+                        height='23px'
+                        width='23px'
+                        xmlns='http://www.w3.org/2000/svg'
+                        className='sc-dbkWiv iSHKCo animate-fade-in'
+                     >
+                        <defs>
+                           <linearGradient id='grad1' x1='0%' y1='0%' x2='100%' y2='0%'>
+                              <stop offset='0%' style={{ stopColor: 'rgb(106, 252, 2)', stopOpacity: 1 }} />
+                              <stop offset='100%' style={{ stopColor: 'rgb(254, 181, 39)', stopOpacity: 1 }} />
+                           </linearGradient>
+                        </defs>
+                        <path d='M256 160c-52.9 0-96 43.1-96 96s43.1 96 96 96 96-43.1 96-96-43.1-96-96-96zm246.4 80.5l-94.7-47.3 33.5-100.4c4.5-13.6-8.4-26.5-21.9-21.9l-100.4 33.5-47.4-94.8c-6.4-12.8-24.6-12.8-31 0l-47.3 94.7L92.7 70.8c-13.6-4.5-26.5 8.4-21.9 21.9l33.5 100.4-94.7 47.4c-12.8 6.4-12.8 24.6 0 31l94.7 47.3-33.5 100.5c-4.5 13.6 8.4 26.5 21.9 21.9l100.4-33.5 47.3 94.7c6.4 12.8 24.6 12.8 31 0l47.3-94.7 100.4 33.5c13.6 4.5 26.5-8.4 21.9-21.9l-33.5-100.4 94.7-47.3c13-6.5 13-24.7.2-31.1zm-155.9 106c-49.9 49.9-131.1 49.9-181 0-49.9-49.9-49.9-131.1 0-181 49.9-49.9 131.1-49.9 181 0 49.9 49.9 49.9 131.1 0 181z' />
+                     </svg>
+                  )}
+               </button>
                <Popover
                   renderPopover={
-                     <div className='flex w-[180px] flex-col gap-y-3 rounded-sm bg-white px-6 py-4 shadow-md md:text-base'>
+                     <div className='flex w-[180px] flex-col gap-y-3 rounded-sm bg-white dark:bg-slate-700 dark:text-white px-6 py-4 shadow-md md:text-base'>
                         <button
                            onClick={() => changeLanguages('vi')}
                            className='cursor-pointer text-left hover:text-primary'
@@ -116,18 +182,21 @@ export default function Header({ isCart }: { isCart?: boolean }) {
                {isAuthenticated ? (
                   <Popover
                      renderPopover={
-                        <div className='flex flex-col overflow-hidden rounded-sm bg-white shadow-md md:text-base'>
-                           <Link className='px-4 py-2 hover:bg-blue-50 hover:text-blue-500 ' to={path.profile}>
+                        <div className='flex flex-col overflow-hidden rounded-sm bg-white dark:bg-slate-700 dark:text-white shadow-md md:text-base'>
+                           <Link className='px-4 py-2 hover:bg-gray-100 dark:hover:bg-slate-600 ' to={path.profile}>
                               {t('account')}
                            </Link>
-                           <Link className='px-4 py-2 hover:bg-blue-50 hover:text-blue-500' to={path.historyPurchase}>
+                           <Link
+                              className='px-4 py-2 hover:bg-gray-100 dark:hover:bg-slate-600'
+                              to={path.historyPurchase}
+                           >
                               {t('purchase')}
                            </Link>
                            <Button
                               onClick={handleLogout}
                               isLoading={logoutMutation.isLoading}
                               disabled={logoutMutation.isLoading}
-                              className='px-4 py-2  text-left hover:bg-blue-50 hover:text-blue-500'
+                              className='px-4 py-2  text-left hover:bg-gray-100 dark:hover:bg-slate-600'
                            >
                               {t('logout')}
                            </Button>
@@ -194,7 +263,7 @@ export default function Header({ isCart }: { isCart?: boolean }) {
                   </Link>
                   <form
                      onSubmit={handleSearch}
-                     className='ml-2 mr-2 flex flex-1 rounded-sm bg-white p-1 md:ml-5 md:mr-10'
+                     className='ml-2 mr-2 flex flex-1 rounded-sm bg-white dark:bg-slate-700 dark:text-white p-1 md:ml-5 md:mr-10'
                   >
                      <input
                         type='text'
@@ -222,10 +291,10 @@ export default function Header({ isCart }: { isCart?: boolean }) {
 
                   <Popover
                      renderPopover={
-                        <div className='w-full max-w-[300px] md:max-w-[400px] rounded-sm bg-white py-2 shadow-md'>
+                        <div className='w-full max-w-[300px] md:max-w-[400px] rounded-sm bg-white dark:bg-slate-700 dark:text-white py-2 shadow-md'>
                            {purchaseInCartData && purchaseInCartData.length > 0 ? (
                               <>
-                                 <div className='mb-3 px-2 font-medium capitalize text-secondary'>
+                                 <div className='mb-3 px-2 font-medium capitalize text-secondary dark:text-slate-400'>
                                     {t('newAddProduct')}
                                  </div>
                                  <ul>
@@ -236,7 +305,7 @@ export default function Header({ isCart }: { isCart?: boolean }) {
                                                 name: purchase.product.name,
                                                 id: purchase.product._id
                                              })}`}
-                                             className='flex items-center gap-x-2 p-2 hover:bg-gray-100'
+                                             className='flex items-center gap-x-2 p-2 hover:bg-gray-100 dark:hover:bg-slate-600'
                                           >
                                              <img
                                                 src={purchase.product.image}
@@ -252,7 +321,7 @@ export default function Header({ isCart }: { isCart?: boolean }) {
                                     ))}
                                  </ul>
                                  <div className='mt-4 flex items-center justify-between px-2'>
-                                    <p className='capitalize text-secondary'>
+                                    <p className='capitalize text-secondary dark:text-slate-400'>
                                        {purchaseInCartData.slice(5).length || ''} {t('AddItemToCart')}
                                     </p>
                                     <Link
@@ -302,7 +371,7 @@ export default function Header({ isCart }: { isCart?: boolean }) {
             )}
          </div>
          {isCart && (
-            <div className='bg-white py-5'>
+            <div className='bg-white dark:bg-slate-800 py-5'>
                <div className='container'>
                   <nav className='md:flex md:items-center md:justify-between'>
                      <Link to={path.home} className='flex flex-shrink-0 items-center'>
@@ -348,7 +417,7 @@ export default function Header({ isCart }: { isCart?: boolean }) {
                         <div className='flex rounded-sm border-2 border-primary'>
                            <input
                               type='text'
-                              className='w-full border-none bg-transparent px-3 py-1 outline-none md:text-base'
+                              className='w-full border-none dark:text-white bg-transparent px-3 py-1 outline-none md:text-base'
                               placeholder='Free Ship Đơn Từ 0Đ'
                               {...register('search')}
                            />

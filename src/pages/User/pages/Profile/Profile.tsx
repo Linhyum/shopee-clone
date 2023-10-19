@@ -116,7 +116,7 @@ export default function Profile() {
    console.log(previewImage)
 
    return (
-      <div className='bg-white rounded shadow-lg p-3 md:p-6'>
+      <div className='bg-white dark:bg-slate-800 rounded shadow-lg p-3 md:p-6'>
          <Helmet>
             <title>{`${profileData?.name || profileData?.email} | Shopee Clone`}</title>
             <meta
@@ -127,7 +127,7 @@ export default function Profile() {
             />
          </Helmet>
          <h1 className='capitalize text-lg mb-1'>{t('myProfile')}</h1>
-         <p className='text-gray-700'>{t('manage')}</p>
+         <p className='text-gray-700 dark:text-slate-400'>{t('manage')}</p>
          <Seperate />
          <form
             onSubmit={onSubmit}
@@ -135,24 +135,26 @@ export default function Profile() {
          >
             <div className='flex flex-col gap-y-2 w-full md:w-[60%] lg:w-[70%]'>
                <div className='flex flex-col sm:flex-row items-center gap-y-1 gap-x-5 mb-3'>
-                  <div className='w-full sm:w-[20%] sm:text-right text-gray-700 capitalize'>Email:</div>
+                  <div className='w-full sm:w-[20%] sm:text-right text-gray-700 dark:text-white  capitalize'>
+                     Email:
+                  </div>
                   <div className='w-full sm:w-[80%]'>{profileData?.email}</div>
                </div>
                <div className='flex flex-col sm:flex-row items-center gap-y-1 gap-x-5'>
-                  <div className='w-full sm:w-[20%] sm:text-right text-gray-700 capitalize sm:-translate-y-3'>
+                  <div className='w-full sm:w-[20%] sm:text-right text-gray-700 dark:text-white capitalize sm:-translate-y-3'>
                      {t('name')}:
                   </div>
                   <Input
                      name='name'
                      className='w-full sm:w-[80%] flex flex-col gap-y-1'
                      placeholder={t('name')}
-                     classNameInput='w-full h-10 border px-3 border-gray-300 focus:border-blue-500 outline-none rounded'
+                     classNameInput='w-full h-10 border px-3 border-gray-300 dark:bg-slate-700 focus:border-blue-500 outline-none rounded'
                      register={register}
                      errorMessage={errors.name?.message}
                   />
                </div>
                <div className='flex flex-col sm:flex-row items-center gap-y-1 gap-x-5'>
-                  <div className='w-full sm:w-[20%] sm:text-right text-gray-700 capitalize sm:-translate-y-3'>
+                  <div className='w-full sm:w-[20%] sm:text-right text-gray-700 dark:text-white capitalize sm:-translate-y-3'>
                      {t('phoneNumber')}:
                   </div>
                   <Controller
@@ -163,7 +165,7 @@ export default function Profile() {
                            errorMessage={errors.phone?.message}
                            className='w-full sm:w-[80%] flex flex-col gap-y-1'
                            placeholder={t('phoneNumber')}
-                           classNameInput='w-full h-10 border px-3 border-gray-300 focus:border-blue-500 outline-none rounded'
+                           classNameInput='w-full h-10 border px-3 border-gray-300 dark:bg-slate-700 focus:border-blue-500 outline-none rounded'
                            {...field}
                            onChange={field.onChange}
                         />
@@ -171,7 +173,7 @@ export default function Profile() {
                   />
                </div>
                <div className='flex flex-col sm:flex-row items-center gap-y-1 gap-x-5'>
-                  <div className='w-full sm:w-[20%] sm:text-right text-gray-700 capitalize sm:-translate-y-3'>
+                  <div className='w-full sm:w-[20%] sm:text-right text-gray-700 dark:text-white capitalize sm:-translate-y-3'>
                      {t('address')}:
                   </div>
                   <Input
@@ -180,7 +182,7 @@ export default function Profile() {
                      errorMessage={errors.address?.message}
                      className='w-full sm:w-[80%] flex flex-col gap-y-1'
                      placeholder={t('address')}
-                     classNameInput='w-full h-10 border px-3 border-gray-300 focus:border-blue-500 outline-none rounded'
+                     classNameInput='w-full h-10 border px-3 border-gray-300 dark:bg-slate-700 focus:border-blue-500 outline-none rounded'
                   />
                </div>
 
@@ -224,7 +226,7 @@ export default function Profile() {
                      className='w-28 h-28 rounded-full object-cover'
                   />
                   <InputFile onChange={setFile} />
-                  <div className='text-secondary'>
+                  <div className='text-secondary dark:text-slate-400'>
                      <p>{t('fileSize')}</p>
                      <p>{t('fileExt')}</p>
                   </div>
@@ -269,13 +271,15 @@ function DateSelect({ errorMessage, onChange, value }: Props) {
    return (
       <>
          <div className='flex flex-col sm:flex-row items-center gap-y-1 gap-x-5'>
-            <div className='w-full sm:w-[20%] sm:text-right text-gray-700 capitalize'>{t('dateOfBirth')}:</div>
+            <div className='w-full sm:w-[20%] sm:text-right text-gray-700 dark:text-white capitalize'>
+               {t('dateOfBirth')}:
+            </div>
             <div className='flex gap-x-3 w-full sm:w-[80%]'>
                <select
                   onChange={handleChange}
                   name='day'
                   value={date.day}
-                  className='focus:border-blue-500 cursor-pointer px-2 w-full h-10 rounded border border-gray-300 outline-none'
+                  className='focus:border-blue-500 cursor-pointer px-2 w-full h-10 rounded border border-gray-300 dark:bg-slate-700 outline-none'
                >
                   <option disabled>{t('day')}</option>
                   {/* range của lodash giống render array list */}
@@ -289,7 +293,7 @@ function DateSelect({ errorMessage, onChange, value }: Props) {
                   onChange={handleChange}
                   name='month'
                   value={date.month}
-                  className='focus:border-blue-500 cursor-pointer px-2 w-full h-10 rounded border border-gray-300 outline-none'
+                  className='focus:border-blue-500 cursor-pointer px-2 w-full h-10 rounded border border-gray-300 dark:bg-slate-700 outline-none'
                >
                   <option disabled>{t('month')}</option>
                   {/* do tháng trong date bắt đầu từ 0 */}
@@ -303,7 +307,7 @@ function DateSelect({ errorMessage, onChange, value }: Props) {
                   onChange={handleChange}
                   name='year'
                   value={date.year}
-                  className='focus:border-blue-500 cursor-pointer px-2 w-full h-10 rounded border border-gray-300 outline-none'
+                  className='focus:border-blue-500 cursor-pointer px-2 w-full h-10 rounded border border-gray-300 dark:bg-slate-700 outline-none'
                >
                   <option disabled>{t('year')}</option>
                   {range(34).map((item) => (

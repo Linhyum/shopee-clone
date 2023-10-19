@@ -12,7 +12,7 @@ export default function TogglePassword({ openEye, onClick }: Props) {
                viewBox='0 0 24 24'
                strokeWidth={1.5}
                stroke='currentColor'
-               className='w-5 h-5 cursor-pointer absolute right-2 text-gray-700 top-1/2 -translate-y-1/2'
+               className='w-5 h-5 cursor-pointer absolute right-2 text-gray-700 dark:text-slate-400 top-1/2 -translate-y-1/2'
             >
                <path
                   strokeLinecap='round'
@@ -28,7 +28,7 @@ export default function TogglePassword({ openEye, onClick }: Props) {
                viewBox='0 0 24 24'
                strokeWidth={1.5}
                stroke='currentColor'
-               className='w-5 h-5 cursor-pointer absolute right-2 text-gray-700 top-1/2 -translate-y-1/2'
+               className='w-5 h-5 cursor-pointer absolute right-2 text-gray-700 dark:text-slate-400 top-1/2 -translate-y-1/2'
             >
                <path
                   strokeLinecap='round'

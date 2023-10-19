@@ -1,6 +1,6 @@
 export default function Footer() {
    return (
-      <footer className='bg-neutral-100 py-8 text-center leading-loose text-secondary'>
+      <footer className='bg-neutral-100 dark:bg-slate-950 py-8 text-center leading-loose text-secondary dark:text-white'>
          <div className='container'>
             <p className='mb-4'> Shopee Clone Typescript</p>
             <p>

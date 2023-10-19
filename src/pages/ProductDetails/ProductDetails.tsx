@@ -15,6 +15,7 @@ import { path } from 'src/constants/path'
 import { useTranslation } from 'react-i18next'
 import { Helmet } from 'react-helmet'
 import { convert } from 'html-to-text'
+import Loading from 'src/components/Loading/Loading'
 
 export default function ProductDetails() {
    const { t } = useTranslation()
@@ -140,8 +141,8 @@ export default function ProductDetails() {
    // }, [idProduct])
 
    return (
-      <div className='bg-gray-200 py-6'>
-         {product && (
+      <div className='bg-gray-200 dark:bg-slate-900 py-6 dark:text-white'>
+         {product ? (
             <>
                <Helmet>
                   <title>{product.name}</title>
@@ -155,7 +156,7 @@ export default function ProductDetails() {
                   />
                </Helmet>
                <div className='container'>
-                  <div className='grid grid-cols-12 gap-y-5 bg-white p-4 shadow md:gap-x-9'>
+                  <div className='grid grid-cols-12 gap-y-5 bg-white dark:bg-slate-800 p-4 shadow md:gap-x-9'>
                      <div className='col-span-12 md:col-span-5'>
                         <div
                            onMouseMove={handleImageZoom}
@@ -233,11 +234,11 @@ export default function ProductDetails() {
                            <div className='mx-4 h-4 w-[1px] bg-gray-300' />
                            <div className='flex items-center gap-x-1'>
                               <span>{formatNumberWithK(product.sold)}</span>
-                              <span className='text-secondary'>{t('sold')}</span>
+                              <span className='text-secondary dark:text-slate-400 dark:text-white'>{t('sold')}</span>
                            </div>
                         </div>
-                        <div className='flex w-full flex-col items-center gap-x-3 bg-gray-50 p-5 md:flex-row'>
-                           <span className='text-base text-secondary line-through'>
+                        <div className='flex w-full flex-col items-center gap-x-3 bg-gray-50 dark:bg-slate-700 p-5 md:flex-row'>
+                           <span className='text-base text-secondary dark:text-slate-400 line-through'>
                               ₫{formatNumber(product.price_before_discount)}
                            </span>
                            <span className='text-3xl text-primary'>₫{formatNumber(product.price)}</span>
@@ -246,7 +247,7 @@ export default function ProductDetails() {
                            </span>
                         </div>
                         <div className='flex flex-wrap items-center gap-5'>
-                           <span className='text-base text-secondary'>{t('quantity')}</span>
+                           <span className='text-base text-secondary dark:text-slate-400'>{t('quantity')}</span>
                            <QuantityController
                               value={buyCount}
                               max={product.quantity}
@@ -254,7 +255,7 @@ export default function ProductDetails() {
                               onDecrease={handleBuyCount}
                               onType={handleBuyCount}
                            />
-                           <span className='text-secondary'>
+                           <span className='text-secondary dark:text-slate-400'>
                               {product.quantity} {t('available')}
                            </span>
                         </div>
@@ -313,8 +314,8 @@ export default function ProductDetails() {
                         </div>
                      </div>
                   </div>
-                  <div className='mt-6 bg-white p-4 shadow'>
-                     <div className='mb-10 bg-gray-50 px-5 py-3'>
+                  <div className='mt-6 bg-white dark:bg-slate-800 p-4 shadow'>
+                     <div className='mb-5 bg-gray-50 dark:bg-slate-700 px-5 py-3'>
                         <span className='text-xl'>{t('desc')}</span>
                      </div>
                      <div
@@ -324,7 +325,7 @@ export default function ProductDetails() {
                         }}
                      />
                   </div>
-                  <div className='text-secondary my-6 text-base'>{t('like')}</div>
+                  <div className='text-secondary dark:text-slate-400 my-6 text-base'>{t('like')}</div>
                   {productsData && (
                      <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3'>
                         {productsData.data.data.products.map((productItem) => (
@@ -334,6 +335,8 @@ export default function ProductDetails() {
                   )}
                </div>
             </>
+         ) : (
+            <Loading />
          )}
       </div>
    )

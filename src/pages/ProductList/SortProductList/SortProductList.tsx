@@ -29,19 +29,21 @@ export default function SortProductList({ queryConfig, pageSize }: Props) {
 
    const handlePriceOrder = (orderValue: Exclude<ProductListParams['order'], undefined>) => {
       navigate({
-         pathname: path.home,
+         pathname: '/',
          search: createSearchParams({ ...queryConfig, sort_by: sortBy.price, order: orderValue }).toString()
       })
    }
 
    return (
-      <div className='flex flex-wrap items-center justify-between gap-2 bg-gray-300/40 px-3 py-4'>
+      <div className='flex flex-wrap items-center justify-between gap-2 bg-gray-300/40 dark:bg-slate-800 px-3 py-4'>
          <div className='flex flex-wrap items-center gap-2'>
             <span className='text-base'>{t('sort')}</span>
             <Button
                onClick={() => handleSort('view')}
                className={`h-8 px-4 ${
-                  isActiveSortBy('view') ? 'bg-primary text-white hover:bg-primary/90' : 'bg-white hover:bg-slate-100'
+                  isActiveSortBy('view')
+                     ? 'bg-primary text-white hover:bg-primary/90'
+                     : 'bg-white dark:bg-slate-700 hover:bg-slate-100'
                }`}
             >
                {t('popular')}
@@ -51,7 +53,7 @@ export default function SortProductList({ queryConfig, pageSize }: Props) {
                className={`h-8 px-4 ${
                   isActiveSortBy('createdAt')
                      ? 'bg-primary text-white hover:bg-primary/90'
-                     : 'bg-white hover:bg-slate-100'
+                     : 'bg-white dark:bg-slate-700 hover:bg-slate-100'
                }`}
             >
                {t('newest')}
@@ -59,14 +61,18 @@ export default function SortProductList({ queryConfig, pageSize }: Props) {
             <Button
                onClick={() => handleSort('sold')}
                className={`h-8 px-4 ${
-                  isActiveSortBy('sold') ? 'bg-primary text-white hover:bg-primary/90' : 'bg-white hover:bg-slate-100'
+                  isActiveSortBy('sold')
+                     ? 'bg-primary text-white hover:bg-primary/90'
+                     : 'bg-white dark:bg-slate-700 hover:bg-slate-100'
                }`}
             >
                {t('selling')}
             </Button>
             <select
                className={`h-8 cursor-pointer px-4 text-left capitalize outline-none ${
-                  isActiveSortBy('price') ? 'bg-primary text-white hover:bg-primary/90' : 'bg-white hover:bg-slate-100'
+                  isActiveSortBy('price')
+                     ? 'bg-primary text-white hover:bg-primary/90'
+                     : 'bg-white dark:bg-slate-700 hover:bg-slate-100'
                }`}
                value={order || ''}
                onChange={(e) => handlePriceOrder(e.target.value as Exclude<ProductListParams['order'], undefined>)}
@@ -90,7 +96,7 @@ export default function SortProductList({ queryConfig, pageSize }: Props) {
             <div className='flex items-center'>
                {page === 1 ? (
                   <span
-                     className={`flex h-8 w-9 cursor-not-allowed items-center justify-center rounded-bl-sm rounded-tl-sm bg-white/60 shadow`}
+                     className={`flex h-8 w-9 cursor-not-allowed items-center justify-center rounded-bl-sm rounded-tl-sm bg-white/60 dark:bg-slate-600 shadow`}
                   >
                      <svg
                         xmlns='http://www.w3.org/2000/svg'
@@ -109,7 +115,7 @@ export default function SortProductList({ queryConfig, pageSize }: Props) {
                         pathname: path.home,
                         search: createSearchParams({ ...queryConfig, page: (page - 1).toString() }).toString()
                      }}
-                     className={`flex h-8 w-9 items-center justify-center rounded-bl-sm rounded-tl-sm bg-white shadow hover:bg-slate-100`}
+                     className={`flex h-8 w-9 items-center justify-center rounded-bl-sm rounded-tl-sm bg-white dark:bg-slate-700 shadow hover:bg-slate-100`}
                   >
                      <svg
                         xmlns='http://www.w3.org/2000/svg'
@@ -124,7 +130,7 @@ export default function SortProductList({ queryConfig, pageSize }: Props) {
                   </Link>
                )}
                {page === pageSize ? (
-                  <span className='flex h-8 w-9 cursor-not-allowed items-center justify-center rounded-br-sm rounded-tr-sm bg-white/60 shadow'>
+                  <span className='flex h-8 w-9 cursor-not-allowed items-center justify-center rounded-br-sm rounded-tr-sm bg-white/60 dark:bg-slate-600 shadow'>
                      <svg
                         xmlns='http://www.w3.org/2000/svg'
                         fill='none'
@@ -142,7 +148,7 @@ export default function SortProductList({ queryConfig, pageSize }: Props) {
                         pathname: path.home,
                         search: createSearchParams({ ...queryConfig, page: (page + 1).toString() }).toString()
                      }}
-                     className='flex h-8 w-9  items-center justify-center rounded-br-sm rounded-tr-sm bg-white shadow hover:bg-slate-100'
+                     className='flex h-8 w-9  items-center justify-center rounded-br-sm rounded-tr-sm bg-white dark:bg-slate-700 shadow hover:bg-slate-100'
                   >
                      <svg
                         xmlns='http://www.w3.org/2000/svg'

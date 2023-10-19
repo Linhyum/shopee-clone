@@ -50,7 +50,7 @@ export default function Popover({ children, renderPopover, as: Element = 'div', 
                   >
                      <span
                         ref={arrowRef}
-                        className='absolute h-[10px] w-6 -translate-y-full bg-white'
+                        className='absolute h-[10px] w-6 -translate-y-full bg-white dark:bg-slate-700'
                         style={{
                            left: middlewareData.arrow?.x,
                            top: middlewareData.arrow?.y,
