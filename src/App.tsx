@@ -9,7 +9,6 @@ import I18nProvider from './i18n/i18n'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-
 const NotFound = lazy(() => import('./pages/NotFound/NotFound'))
 const HistoryPurchase = lazy(() => import('./pages/User/pages/HistoryPurchase/HistoryPurchase'))
 const ChangePassword = lazy(() => import('./pages/User/pages/ChangePassword/ChangePassword'))

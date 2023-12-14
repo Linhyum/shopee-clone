@@ -133,21 +133,24 @@ export default function Cart() {
    }
 
    const handleDetelePurchases = () => {
-      Swal.fire({
-         title: `Bạn muốn xoá tất cả sản phẩm?`,
-         text: 'Bạn sẽ không thể hoàn tác hành động này!',
-         icon: 'warning',
-         showCancelButton: true,
-         confirmButtonColor: '#3085d6',
-         cancelButtonColor: '#d33',
-         confirmButtonText: 'Xoá tất cả'
-      }).then(async (result) => {
-         if (result.isConfirmed) {
-            const result = extendedPurchasesChecked.map((purchase) => purchase._id)
-            deletePurchaseMutation.mutate(result)
-            Swal.fire({ text: 'Xoá sản phẩm thành công!', icon: 'success' })
-         }
-      })
+      const result = extendedPurchasesChecked.map((purchase) => purchase._id)
+      if (result.length > 0) {
+         Swal.fire({
+            title: `Bạn muốn xoá tất cả sản phẩm?`,
+            text: 'Bạn sẽ không thể hoàn tác hành động này!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Xoá tất cả'
+         }).then(async (result) => {
+            if (result.isConfirmed) {
+               const result = extendedPurchasesChecked.map((purchase) => purchase._id)
+               deletePurchaseMutation.mutate(result)
+               Swal.fire({ text: 'Xoá sản phẩm thành công!', icon: 'success' })
+            }
+         })
+      }
    }
 
    const handleBuyProduct = () => {
