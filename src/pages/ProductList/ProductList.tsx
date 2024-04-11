@@ -38,30 +38,25 @@ export default function ProductList() {
                content='Trang chủ của Shopee Clone - Nơi bạn có thể khám phá và mua sắm các sản phẩm phong phú và đa dạng. Tận hưởng trải nghiệm mua sắm trực tuyến tuyệt vời với Shopee Clone.'
             />
          </Helmet>
-         <div className='container grid grid-cols-12 gap-y-10 md:gap-5'>
-            {productsData && categoriesData ? (
-               <>
-                  <div className='col-span-12 text-base md:col-span-3'>
-                     <AsideFilter queryConfig={queryConfig} categoriesData={categoriesData.data.data} />
-                  </div>
-                  <div className='col-span-12 md:col-span-9'>
-                     <SortProductList
-                        queryConfig={queryConfig}
-                        pageSize={productsData.data.data.pagination.page_size}
-                     />
+         {productsData && categoriesData ? (
+            <div className='container grid grid-cols-12 gap-y-10 md:gap-5'>
+               <div className='col-span-12 text-base md:col-span-3'>
+                  <AsideFilter queryConfig={queryConfig} categoriesData={categoriesData.data.data} />
+               </div>
+               <div className='col-span-12 md:col-span-9'>
+                  <SortProductList queryConfig={queryConfig} pageSize={productsData.data.data.pagination.page_size} />
 
-                     <div className='mt-5 grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'>
-                        {productsData.data.data.products.map((product) => (
-                           <Product key={product._id} product={product} />
-                        ))}
-                     </div>
-                     <Pagination queryConfig={queryConfig} pageSize={productsData.data.data.pagination.page_size} />
+                  <div className='mt-5 grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'>
+                     {productsData.data.data.products.map((product) => (
+                        <Product key={product._id} product={product} />
+                     ))}
                   </div>
-               </>
-            ) : (
-               <Loading />
-            )}
-         </div>
+                  <Pagination queryConfig={queryConfig} pageSize={productsData.data.data.pagination.page_size} />
+               </div>
+            </div>
+         ) : (
+            <Loading />
+         )}
       </div>
    )
 }

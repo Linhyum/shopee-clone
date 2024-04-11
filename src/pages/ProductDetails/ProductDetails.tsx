@@ -31,6 +31,7 @@ export default function ProductDetails() {
          document.body.scrollIntoView({ behavior: 'smooth', block: 'start' })
          return productApi.getProductDetail(idProduct as string)
       },
+
       keepPreviousData: true // giữ lại data trước để mỗi lần fetch lại không bị giật trang web
    })
 

@@ -113,7 +113,6 @@ export default function Profile() {
          }
       }
    })
-   console.log(previewImage)
 
    return (
       <div className='bg-white dark:bg-slate-800 rounded shadow-lg p-3 md:p-6'>
